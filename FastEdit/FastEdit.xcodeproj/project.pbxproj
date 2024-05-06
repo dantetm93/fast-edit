@@ -114,15 +114,12 @@
 		BB01E4D02BE84CC4002D75FE /* FastEdit */ = {
 			isa = PBXGroup;
 			children = (
-				BB01E4EF2BE87419002D75FE /* Presentation */,
 				BB01E4E82BE84E71002D75FE /* Common */,
-				BB01E4E72BE84E6C002D75FE /* App */,
-				BB01E4E62BE84DF0002D75FE /* Transfer */,
 				BB01E4E52BE84DD5002D75FE /* Domain */,
-				BB01E4D12BE84CC4002D75FE /* AppDelegate.swift */,
-				BB01E4D32BE84CC4002D75FE /* SceneDelegate.swift */,
-				BB01E4DA2BE84CC6002D75FE /* Assets.xcassets */,
-				BB01E4DC2BE84CC6002D75FE /* LaunchScreen.storyboard */,
+				BB01E4E62BE84DF0002D75FE /* Transfer */,
+				BB01E4EF2BE87419002D75FE /* Presentation */,
+				BB01E4E72BE84E6C002D75FE /* App */,
+				BBCF39172BE97A8300ED3F7D /* Resource */,
 				BB01E4DF2BE84CC6002D75FE /* Info.plist */,
 			);
 			path = FastEdit;
@@ -151,10 +148,12 @@
 		BB01E4E72BE84E6C002D75FE /* App */ = {
 			isa = PBXGroup;
 			children = (
+				BB01E4D12BE84CC4002D75FE /* AppDelegate.swift */,
+				BB01E4D32BE84CC4002D75FE /* SceneDelegate.swift */,
+				BB01E4E92BE84E7D002D75FE /* A_Injector.swift */,
 				BB01E5212BE95D27002D75FE /* PhotoPickerManager */,
 				BB01E5062BE8CA14002D75FE /* Navigation */,
 				BB01E4FD2BE8C155002D75FE /* Logger */,
-				BB01E4E92BE84E7D002D75FE /* A_Injector.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -271,6 +270,15 @@
 				BB01E5222BE95D3D002D75FE /* A_PhotoPickerManager.swift */,
 			);
 			path = PhotoPickerManager;
+			sourceTree = "<group>";
+		};
+		BBCF39172BE97A8300ED3F7D /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				BB01E4DA2BE84CC6002D75FE /* Assets.xcassets */,
+				BB01E4DC2BE84CC6002D75FE /* LaunchScreen.storyboard */,
+			);
+			path = Resource;
 			sourceTree = "<group>";
 		};
 		E1BADC169DCDA401396165E4 /* Frameworks */ = {

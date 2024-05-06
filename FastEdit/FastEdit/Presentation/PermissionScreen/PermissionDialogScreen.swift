@@ -35,7 +35,7 @@ class PermissionDialogScreen: UIViewController {
     private var isMiddleNavigation: Bool = false
     private var permissionState: PermisisonStatus = .goToSetting
     private var onNext: (Bool) -> Void = {_ in }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -92,7 +92,9 @@ class PermissionDialogScreen: UIViewController {
             }
         }
         
-        self.setupListenerForPermissionChange()
+        if self.permissionState == .goToSetting {
+            self.setupListenerForPermissionChange()
+        }
     }
     
     private func setupListenerForPermissionChange() {
@@ -137,93 +139,6 @@ class PermissionDialogScreen: UIViewController {
     }
     
     // MARK: - Photo permission -
-    
-//    func handlePhotoPermission(fromRequest: Bool, _ completion: ((Bool) -> Void)? ) {
-//        
-//        func onAuthorizationResult(result: PHAuthorizationStatus) {
-//            switch result {
-//            case .authorized:
-//                completion?(true)
-//                
-//            case .restricted, .denied:
-//                let text = "Fast Edit does not photo app access. Allow photo access to upload videos."
-//                NavigationCenter.getTopScreen()?.showConfirm(text, onConfirm: { _ in
-//                    NavigationCenter.goToDeviceSetting(true)
-//                }, onCancel: { _ in
-//                    completion?(false)
-//                })
-//                
-//            case .limited:
-//                let text = "Fast Edit has limited photo app access. Select the Images you want to grant access to or change your settings to Full Access."
-//                NavigationCenter.getRootNav().topViewController?
-//                    .showConfirm(text, titleConfirm: "Settings",
-//                                 titleCancel: "Select video",
-//                                 onConfirm: { _ in
-//                        NavigationCenter.goToDeviceSetting(true)
-//                    }, onCancel: { _ in
-//                        completion?(true)
-//                    })
-//                
-//            default:
-//                PHPhotoLibrary.requestAuthorization(for: .readWrite) { result in
-//                }
-//            }
-//        }
-//        if #available(iOS 14, *) {
-//            let result = PHPhotoLibrary.authorizationStatus(for: .readWrite)
-//
-//            
-//        } else {
-//            
-//            let result = PHPhotoLibrary.authorizationStatus()
-//            switch result {
-//            case .authorized:
-//                completion?(true)
-//                
-//            case .restricted, .denied:
-//                let text = "Fast Edit does not photo app access. Allow photo access to select image and edit."
-//                NavigationCenter.getTopScreen()?
-//                    .showConfirm(text, onConfirm: { _ in
-//                    NavigationCenter.goToDeviceSetting(true)
-//                }, onCancel: { _ in
-//                    completion?(false)
-//                })
-//                
-//            case .limited:
-//                let text = "Fast Edit has limited photo app access. Select the Videos you want to grant upload access to or change your settings to Full Access."
-//                NavigationCenter.getTopScreen()?
-//                    .showConfirm(text, titleConfirm: "Settings",
-//                                 titleCancel: "Select video",
-//                                 onConfirm: { _ in
-//                        NavigationCenter.goToDeviceSetting(true)
-//                    }, onCancel: { _ in
-//                        completion?(true)
-//                    })
-//                
-//            default:
-//                PHPhotoLibrary.requestAuthorization { result in
-//                    switchToMain {
-//                        if result == .authorized {
-//                            completion?(true)
-//                        } else {
-//                            if result == .denied || result == .restricted {
-//                                let text = PermissionDesc.photo.rawValue
-//                                NavigationCenter.getTopScreen()?
-//                                    .showConfirm(text, onConfirm: { _ in
-//                                    NavigationCenter.goToDeviceSetting(true)
-//                                }, onCancel: { _ in
-//                                    completion?(false)
-//                                })
-//                            } else {
-//                                completion?(false)
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
-    
     func requestPhotoPermission() {
         if #available(iOS 14, *) {
             PHPhotoLibrary.requestAuthorization(for: .readWrite) {[weak self] result in
@@ -243,10 +158,26 @@ class PermissionDialogScreen: UIViewController {
                         }
                     })
                 }
-                
             }
         } else {
-            // Fallback on earlier versions
+            PHPhotoLibrary.requestAuthorization {[weak self] result in
+                switchToMain {
+                    self?.dismiss(animated: true, completion: {
+                        switch result {
+                        case .notDetermined:
+                            self?.onNext(false)
+                        case .restricted:
+                            self?.onNext(false)
+                        case .denied:
+                            self?.onNext(false)
+                        case .authorized:
+                            self?.onNext(true)
+                        case .limited:
+                            self?.onNext(true)
+                        }
+                    })
+                }
+            }
         }
     }
     

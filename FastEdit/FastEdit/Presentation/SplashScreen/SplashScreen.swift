@@ -15,7 +15,9 @@ class SplashScreen: BaseScreen {
             self.handlePermissionIfNeeded { allowed in
                 AppLogger.d(SplashScreen.typeName, "handlePermissionIfNeeded: \(allowed)", #fileID, #line)
                 if allowed {
-                    AlbumManager.current.setup()
+                    switchToDefaultGlobal {
+                        AlbumManager.current.setup()
+                    }
                 }
                 NavigationCenter.moveToHomeScreen()
             }

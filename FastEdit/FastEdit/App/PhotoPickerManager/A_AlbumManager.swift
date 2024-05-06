@@ -37,6 +37,10 @@ class AlbumManager: BasePhotoPermissionHandler {
     }
 
     private func createAlbum() {
+        guard self.assetCollection == nil else {
+            AppLogger.d(self.objectName, "Album is loaded. No need to create new one", #fileID, #line)
+            return
+        }
         PHPhotoLibrary.shared().performChanges({
             PHAssetCollectionChangeRequest.creationRequestForAssetCollection(withTitle: AlbumManager.albumName)   // create an asset collection with the album name
         }) { success, error in
