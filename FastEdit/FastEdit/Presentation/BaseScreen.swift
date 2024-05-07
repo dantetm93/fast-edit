@@ -10,5 +10,9 @@ import UIKit
 class BaseScreen: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
+        self.binding()
     }
+    
+    func binding() {}
 }

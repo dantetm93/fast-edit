@@ -11,7 +11,7 @@
 		BB01E4D42BE84CC4002D75FE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB01E4D32BE84CC4002D75FE /* SceneDelegate.swift */; };
 		BB01E4DB2BE84CC6002D75FE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB01E4DA2BE84CC6002D75FE /* Assets.xcassets */; };
 		BB01E4DE2BE84CC6002D75FE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB01E4DC2BE84CC6002D75FE /* LaunchScreen.storyboard */; };
-		BB01E4EA2BE84E7D002D75FE /* A_Injector.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB01E4E92BE84E7D002D75FE /* A_Injector.swift */; };
+		BB01E4EA2BE84E7D002D75FE /* A_DependencyBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB01E4E92BE84E7D002D75FE /* A_DependencyBuilder.swift */; };
 		BB01E4EC2BE8736C002D75FE /* T_Wrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB01E4EB2BE8736C002D75FE /* T_Wrapper.swift */; };
 		BB01E4EE2BE87386002D75FE /* D_Wrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB01E4ED2BE87386002D75FE /* D_Wrapper.swift */; };
 		BB01E4F52BE874FE002D75FE /* BaseScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB01E4F42BE874FE002D75FE /* BaseScreen.swift */; };
@@ -33,6 +33,18 @@
 		BB01E5202BE95B2B002D75FE /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB01E51F2BE95B2B002D75FE /* UIViewController+Extension.swift */; };
 		BB01E5232BE95D3D002D75FE /* A_PhotoPickerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB01E5222BE95D3D002D75FE /* A_PhotoPickerManager.swift */; };
 		BB01E5252BE967C6002D75FE /* A_PhotoPermissionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB01E5242BE967C6002D75FE /* A_PhotoPermissionHandler.swift */; };
+		BB1C42EC2BE9B8730019D09A /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1C42EB2BE9B8730019D09A /* BaseViewModel.swift */; };
+		BBCF391D2BE980CC00ED3F7D /* ImgEditingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCF391B2BE980CC00ED3F7D /* ImgEditingScreen.swift */; };
+		BBCF391E2BE980CC00ED3F7D /* ImgEditingScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBCF391C2BE980CC00ED3F7D /* ImgEditingScreen.xib */; };
+		BBCF39222BE9874500ED3F7D /* EditingToolCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCF39202BE9874500ED3F7D /* EditingToolCollectionCell.swift */; };
+		BBCF39232BE9874500ED3F7D /* EditingToolCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBCF39212BE9874500ED3F7D /* EditingToolCollectionCell.xib */; };
+		BBCF39252BE98B9C00ED3F7D /* UIListView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCF39242BE98B9C00ED3F7D /* UIListView+Extension.swift */; };
+		BBCF39272BE98D3900ED3F7D /* D_ImgTool+Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCF39262BE98D3900ED3F7D /* D_ImgTool+Model.swift */; };
+		BBCF39292BE98D9700ED3F7D /* D_ImgTool+Definition.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCF39282BE98D9700ED3F7D /* D_ImgTool+Definition.swift */; };
+		BBCF392B2BE98EBB00ED3F7D /* D_ImgTool+CropUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCF392A2BE98EBB00ED3F7D /* D_ImgTool+CropUseCase.swift */; };
+		BBCF392D2BE99D4F00ED3F7D /* ImgEditingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCF392C2BE99D4F00ED3F7D /* ImgEditingViewModel.swift */; };
+		BBCF39302BE9A2B200ED3F7D /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCF392F2BE9A2B200ED3F7D /* R.generated.swift */; };
+		BBCF39332BE9AE4C00ED3F7D /* CustomLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCF39322BE9AE4C00ED3F7D /* CustomLoading.swift */; };
 		E8F9CB8E6A35DEE71A8FC66A /* Pods_FastEdit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 370675F6125CD56F01A8F20C /* Pods_FastEdit.framework */; };
 /* End PBXBuildFile section */
 
@@ -46,7 +58,7 @@
 		BB01E4DA2BE84CC6002D75FE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BB01E4DD2BE84CC6002D75FE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BB01E4DF2BE84CC6002D75FE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BB01E4E92BE84E7D002D75FE /* A_Injector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = A_Injector.swift; sourceTree = "<group>"; };
+		BB01E4E92BE84E7D002D75FE /* A_DependencyBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = A_DependencyBuilder.swift; sourceTree = "<group>"; };
 		BB01E4EB2BE8736C002D75FE /* T_Wrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = T_Wrapper.swift; sourceTree = "<group>"; };
 		BB01E4ED2BE87386002D75FE /* D_Wrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = D_Wrapper.swift; sourceTree = "<group>"; };
 		BB01E4F42BE874FE002D75FE /* BaseScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseScreen.swift; sourceTree = "<group>"; };
@@ -59,7 +71,7 @@
 		BB01E50B2BE8CD77002D75FE /* SplashScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreen.swift; sourceTree = "<group>"; };
 		BB01E50C2BE8CD77002D75FE /* SplashScreen.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SplashScreen.xib; sourceTree = "<group>"; };
 		BB01E50F2BE8D1EF002D75FE /* Thread+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Thread+Extension.swift"; sourceTree = "<group>"; };
-		BB01E5112BE8D28D002D75FE /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
+		BB01E5112BE8D28D002D75FE /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		BB01E5122BE8D42B002D75FE /* A_NavCenter+Routing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "A_NavCenter+Routing.swift"; sourceTree = "<group>"; };
 		BB01E5142BE8D48D002D75FE /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
 		BB01E5152BE8D48D002D75FE /* HomeScreen.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeScreen.xib; sourceTree = "<group>"; };
@@ -69,6 +81,18 @@
 		BB01E51F2BE95B2B002D75FE /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		BB01E5222BE95D3D002D75FE /* A_PhotoPickerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = A_PhotoPickerManager.swift; sourceTree = "<group>"; };
 		BB01E5242BE967C6002D75FE /* A_PhotoPermissionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = A_PhotoPermissionHandler.swift; sourceTree = "<group>"; };
+		BB1C42EB2BE9B8730019D09A /* BaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
+		BBCF391B2BE980CC00ED3F7D /* ImgEditingScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImgEditingScreen.swift; sourceTree = "<group>"; };
+		BBCF391C2BE980CC00ED3F7D /* ImgEditingScreen.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImgEditingScreen.xib; sourceTree = "<group>"; };
+		BBCF39202BE9874500ED3F7D /* EditingToolCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingToolCollectionCell.swift; sourceTree = "<group>"; };
+		BBCF39212BE9874500ED3F7D /* EditingToolCollectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditingToolCollectionCell.xib; sourceTree = "<group>"; };
+		BBCF39242BE98B9C00ED3F7D /* UIListView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIListView+Extension.swift"; sourceTree = "<group>"; };
+		BBCF39262BE98D3900ED3F7D /* D_ImgTool+Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "D_ImgTool+Model.swift"; sourceTree = "<group>"; };
+		BBCF39282BE98D9700ED3F7D /* D_ImgTool+Definition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "D_ImgTool+Definition.swift"; sourceTree = "<group>"; };
+		BBCF392A2BE98EBB00ED3F7D /* D_ImgTool+CropUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "D_ImgTool+CropUseCase.swift"; sourceTree = "<group>"; };
+		BBCF392C2BE99D4F00ED3F7D /* ImgEditingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImgEditingViewModel.swift; sourceTree = "<group>"; };
+		BBCF392F2BE9A2B200ED3F7D /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = SOURCE_ROOT; };
+		BBCF39322BE9AE4C00ED3F7D /* CustomLoading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLoading.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,7 +174,7 @@
 			children = (
 				BB01E4D12BE84CC4002D75FE /* AppDelegate.swift */,
 				BB01E4D32BE84CC4002D75FE /* SceneDelegate.swift */,
-				BB01E4E92BE84E7D002D75FE /* A_Injector.swift */,
+				BB01E4E92BE84E7D002D75FE /* A_DependencyBuilder.swift */,
 				BB01E5212BE95D27002D75FE /* PhotoPickerManager */,
 				BB01E5062BE8CA14002D75FE /* Navigation */,
 				BB01E4FD2BE8C155002D75FE /* Logger */,
@@ -171,10 +195,13 @@
 		BB01E4EF2BE87419002D75FE /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				BBCF39312BE9AE4000ED3F7D /* Utility */,
+				BBCF391A2BE980BA00ED3F7D /* ImgEditingScreen */,
 				BB01E5182BE8D5F8002D75FE /* PermissionScreen */,
 				BB01E4F72BE8751E002D75FE /* SplashScreen */,
 				BB01E4F62BE8750F002D75FE /* HomeScreen */,
 				BB01E4F42BE874FE002D75FE /* BaseScreen.swift */,
+				BB1C42EB2BE9B8730019D09A /* BaseViewModel.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -182,6 +209,7 @@
 		BB01E4F02BE8742D002D75FE /* UseCase */ = {
 			isa = PBXGroup;
 			children = (
+				BBCF392A2BE98EBB00ED3F7D /* D_ImgTool+CropUseCase.swift */,
 			);
 			path = UseCase;
 			sourceTree = "<group>";
@@ -189,6 +217,8 @@
 		BB01E4F12BE87432002D75FE /* Entity */ = {
 			isa = PBXGroup;
 			children = (
+				BBCF39262BE98D3900ED3F7D /* D_ImgTool+Model.swift */,
+				BBCF39282BE98D9700ED3F7D /* D_ImgTool+Definition.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -240,6 +270,7 @@
 				BB01E50F2BE8D1EF002D75FE /* Thread+Extension.swift */,
 				BB01E51D2BE9589C002D75FE /* UIView+Extension.swift */,
 				BB01E51F2BE95B2B002D75FE /* UIViewController+Extension.swift */,
+				BBCF39242BE98B9C00ED3F7D /* UIListView+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -275,10 +306,39 @@
 		BBCF39172BE97A8300ED3F7D /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				BBCF392F2BE9A2B200ED3F7D /* R.generated.swift */,
 				BB01E4DA2BE84CC6002D75FE /* Assets.xcassets */,
 				BB01E4DC2BE84CC6002D75FE /* LaunchScreen.storyboard */,
 			);
 			path = Resource;
+			sourceTree = "<group>";
+		};
+		BBCF391A2BE980BA00ED3F7D /* ImgEditingScreen */ = {
+			isa = PBXGroup;
+			children = (
+				BBCF391F2BE9871700ED3F7D /* SubView */,
+				BBCF392C2BE99D4F00ED3F7D /* ImgEditingViewModel.swift */,
+				BBCF391B2BE980CC00ED3F7D /* ImgEditingScreen.swift */,
+				BBCF391C2BE980CC00ED3F7D /* ImgEditingScreen.xib */,
+			);
+			path = ImgEditingScreen;
+			sourceTree = "<group>";
+		};
+		BBCF391F2BE9871700ED3F7D /* SubView */ = {
+			isa = PBXGroup;
+			children = (
+				BBCF39202BE9874500ED3F7D /* EditingToolCollectionCell.swift */,
+				BBCF39212BE9874500ED3F7D /* EditingToolCollectionCell.xib */,
+			);
+			path = SubView;
+			sourceTree = "<group>";
+		};
+		BBCF39312BE9AE4000ED3F7D /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				BBCF39322BE9AE4C00ED3F7D /* CustomLoading.swift */,
+			);
+			path = Utility;
 			sourceTree = "<group>";
 		};
 		E1BADC169DCDA401396165E4 /* Frameworks */ = {
@@ -297,6 +357,7 @@
 			buildConfigurationList = BB01E4E22BE84CC6002D75FE /* Build configuration list for PBXNativeTarget "FastEdit" */;
 			buildPhases = (
 				17C2B3068D8F31D0DE2B833C /* [CP] Check Pods Manifest.lock */,
+				BBCF392E2BE9A20200ED3F7D /* Run Script: RSwift */,
 				BB01E4CA2BE84CC4002D75FE /* Sources */,
 				BB01E4CB2BE84CC4002D75FE /* Frameworks */,
 				BB01E4CC2BE84CC4002D75FE /* Resources */,
@@ -349,8 +410,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBCF39232BE9874500ED3F7D /* EditingToolCollectionCell.xib in Resources */,
 				BB01E5172BE8D48D002D75FE /* HomeScreen.xib in Resources */,
 				BB01E4DE2BE84CC6002D75FE /* LaunchScreen.storyboard in Resources */,
+				BBCF391E2BE980CC00ED3F7D /* ImgEditingScreen.xib in Resources */,
 				BB01E4DB2BE84CC6002D75FE /* Assets.xcassets in Resources */,
 				BB01E51B2BE8D60B002D75FE /* PermissionDialogScreen.xib in Resources */,
 				BB01E50E2BE8CD77002D75FE /* SplashScreen.xib in Resources */,
@@ -399,6 +462,26 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FastEdit/Pods-FastEdit-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		BBCF392E2BE9A20200ED3F7D /* Run Script: RSwift */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script: RSwift";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				$SRCROOT/R.generated.swift,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"$PODS_ROOT/R.swift/rswift\" generate \"$SRCROOT/R.generated.swift\"\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -407,23 +490,33 @@
 			buildActionMask = 2147483647;
 			files = (
 				BB01E50A2BE8CC5B002D75FE /* C_Definition.swift in Sources */,
+				BBCF39292BE98D9700ED3F7D /* D_ImgTool+Definition.swift in Sources */,
 				BB01E4EC2BE8736C002D75FE /* T_Wrapper.swift in Sources */,
+				BBCF39332BE9AE4C00ED3F7D /* CustomLoading.swift in Sources */,
 				BB01E5012BE8C1AC002D75FE /* A_Logger.swift in Sources */,
 				BB01E5102BE8D1EF002D75FE /* Thread+Extension.swift in Sources */,
+				BBCF391D2BE980CC00ED3F7D /* ImgEditingScreen.swift in Sources */,
 				BB01E5162BE8D48D002D75FE /* HomeScreen.swift in Sources */,
 				BB01E51C2BE8D60B002D75FE /* PermissionDialogScreen.swift in Sources */,
 				BB01E4F92BE8ADCA002D75FE /* C_Macro.swift in Sources */,
 				BB01E4D22BE84CC4002D75FE /* AppDelegate.swift in Sources */,
 				BB01E5202BE95B2B002D75FE /* UIViewController+Extension.swift in Sources */,
+				BBCF39302BE9A2B200ED3F7D /* R.generated.swift in Sources */,
+				BB1C42EC2BE9B8730019D09A /* BaseViewModel.swift in Sources */,
 				BB01E4FC2BE8B159002D75FE /* A_AlbumManager.swift in Sources */,
 				BB01E5132BE8D42B002D75FE /* A_NavCenter+Routing.swift in Sources */,
+				BBCF392D2BE99D4F00ED3F7D /* ImgEditingViewModel.swift in Sources */,
+				BBCF39272BE98D3900ED3F7D /* D_ImgTool+Model.swift in Sources */,
 				BB01E5052BE8C20E002D75FE /* NSObject+Extension.swift in Sources */,
 				BB01E50D2BE8CD77002D75FE /* SplashScreen.swift in Sources */,
 				BB01E51E2BE9589C002D75FE /* UIView+Extension.swift in Sources */,
+				BBCF39222BE9874500ED3F7D /* EditingToolCollectionCell.swift in Sources */,
 				BB01E5252BE967C6002D75FE /* A_PhotoPermissionHandler.swift in Sources */,
 				BB01E4F52BE874FE002D75FE /* BaseScreen.swift in Sources */,
+				BBCF39252BE98B9C00ED3F7D /* UIListView+Extension.swift in Sources */,
 				BB01E4D42BE84CC4002D75FE /* SceneDelegate.swift in Sources */,
-				BB01E4EA2BE84E7D002D75FE /* A_Injector.swift in Sources */,
+				BBCF392B2BE98EBB00ED3F7D /* D_ImgTool+CropUseCase.swift in Sources */,
+				BB01E4EA2BE84E7D002D75FE /* A_DependencyBuilder.swift in Sources */,
 				BB01E5082BE8CA20002D75FE /* A_NavCenter.swift in Sources */,
 				BB01E5232BE95D3D002D75FE /* A_PhotoPickerManager.swift in Sources */,
 				BB01E4EE2BE87386002D75FE /* D_Wrapper.swift in Sources */,

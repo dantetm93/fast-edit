@@ -7,11 +7,11 @@
 
 import Foundation
 
-class DomainWrapper {
+class DWrapper {
     
 }
 
-extension DomainWrapper {
+extension DWrapper {
     public class Entity {}
     public class UseCase {}
 }

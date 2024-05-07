@@ -46,7 +46,7 @@ class PhotoPickerManager: BasePhotoPermissionHandler {
             var phPickerConfig = PHPickerConfiguration(photoLibrary: .shared())
             phPickerConfig.selectionLimit = 1
 //            phPickerConfig.filter = PHPickerFilter.any(of: [.videos, .slomoVideos, .timelapseVideos])
-            phPickerConfig.filter = PHPickerFilter.any(of: [.videos])
+            phPickerConfig.filter = PHPickerFilter.any(of: [.images])
             let phPickerVC = PHPickerViewController(configuration: phPickerConfig)
             phPickerVC.delegate = self
             NavigationCenter.getTopScreen()?.present(phPickerVC, animated: true)

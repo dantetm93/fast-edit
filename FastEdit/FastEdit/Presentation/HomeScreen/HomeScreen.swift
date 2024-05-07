@@ -9,21 +9,20 @@ import UIKit
 
 class HomeScreen: BaseScreen {
 
+    @IBOutlet weak var buttonPickImage: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        self.setupUIAction()
     }
-
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    
+    private func setupUIAction() {
+        self.buttonPickImage.makeSmoothRounded(corner: 10)
+        self.buttonPickImage.onClick { _ in
+            PhotoPickerManager.current.openImagePicker { pickedImg in
+                NavigationCenter.openImgEditingScreen(original: pickedImg)
+            }
+        }
     }
-    */
 
 }
