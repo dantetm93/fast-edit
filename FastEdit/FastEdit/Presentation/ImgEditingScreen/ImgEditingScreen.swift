@@ -92,25 +92,20 @@ class ImgEditingScreen: BaseScreen {
         
         guard let cropView else { return }
         cropView.frame = self.viewContainerOfCropping.bounds
-        cropView.cropRegionInsets = .zero
-        AppLogger.d(ImgEditingScreen.typeName, String.init(describing: cropView.frame), #fileID, #line)
+        
+        // Avoid tapping and triggering Notification center, App Switcher,...
+        cropView.cropRegionInsets = .init(top: 20, left: 0, bottom: 20, right: 0)
+        
         cropView.performInitialSetup()
         cropView.moveCroppedContentToCenter(animated: false)
+        
+        AppLogger.d(ImgEditingScreen.typeName, String.init(describing: cropView.frame), #fileID, #line)
     }
     
-    // MARK: - Internal setup
-    private func setupCollectionView() {
-        self.collectionViewTool.register(EditingToolCollectionCell.self)
-        self.collectionViewTool.delegate = self
-        self.collectionViewTool.dataSource = self
-        self.collectionViewTool.showsHorizontalScrollIndicator = false
-    }
-    
-    private func setupResultImgView() {
-        self.imgViewResult.backgroundColor = UIColor.init(hex: "#F0F0F0")
-    }
-    
+    // MARK: - Binding -
     override func binding() {
+        
+        // -- UI content --
         self.viewModel.getListToolPub()
             .receive(on: DispatchQueue.main)
             .sink {[weak self] in
@@ -132,6 +127,24 @@ class ImgEditingScreen: BaseScreen {
             }
             .store(in: &self.cancellable)
         
+        self.viewModel.getCurrentSingleToolValue()
+            .receive(on: DispatchQueue.main)
+            .sink {[weak self] currentValue in
+                self?.sliderToolValue.value = Float(currentValue)
+            }
+            .store(in: &self.cancellable)
+        
+        self.viewModel.getColorFilterRangePub()
+            .receive(on: DispatchQueue.main)
+            .sink {[weak self] range in
+                self?.sliderToolValue.maximumValue = Float(range.max)
+                self?.sliderToolValue.minimumValue = Float(range.min)
+                self?.sliderToolValue.value = Float(range.current)
+            }
+            .store(in: &self.cancellable)
+        
+        
+        // -- UI visibility --
         self.viewModel.getSliderDisplayPub()
             .receive(on: DispatchQueue.main)
             .sink {[weak self] value in
@@ -153,6 +166,7 @@ class ImgEditingScreen: BaseScreen {
             }
             .store(in: &self.cancellable)
         
+        // -- Undo & Redo --
         self.viewModel.getCanUndoPub()
             .receive(on: DispatchQueue.main)
             .sink {[weak self] doable in
@@ -166,6 +180,18 @@ class ImgEditingScreen: BaseScreen {
                 self?.buttonRedo.interactable = doable
             }
             .store(in: &self.cancellable)
+    }
+    
+    // MARK: - UI Setup -
+    private func setupCollectionView() {
+        self.collectionViewTool.register(EditingToolCollectionCell.self)
+        self.collectionViewTool.delegate = self
+        self.collectionViewTool.dataSource = self
+        self.collectionViewTool.showsHorizontalScrollIndicator = false
+    }
+    
+    private func setupResultImgView() {
+        self.imgViewResult.backgroundColor = UIColor.init(hex: "#F0F0F0")
     }
     
     private func resetUIToDefault() {
@@ -186,18 +212,21 @@ class ImgEditingScreen: BaseScreen {
             self.stackViewCropping.isHidden = false
             self.viewContainerSlider.isHidden = true
             self.collectionViewTool.isHidden = true
+            self.view.layoutIfNeeded()
             self.reCreateCroppingView()
             self.reLayoutCroppingView()
         default:
             self.viewHeader.isHidden = false
             self.viewContainerSlider.isHidden = false
             self.stackViewCropping.isHidden = true
+            self.view.layoutIfNeeded()
             guard let cropView else { return }
             cropView.removeFromSuperview()
             self.cropView = nil
         }
     }
     
+    // MARK: - UI Action -
     private func setupUIAction() {
         self.buttonBack
             .onClick { _ in
@@ -216,13 +245,16 @@ class ImgEditingScreen: BaseScreen {
         self.buttonSave
             .onClick { _ in
                 CustomLoading.show()
-                self.getViewModel().saveProcessedImgToGallery {
+                self.getViewModel().saveProcessedImgToGallery { success, error in
                     CustomLoading.hide()
-                    NavigationCenter.showToast(error: "Successfully saved to Gallery!", success: true)
-                    NavigationCenter.back()
+                    NavigationCenter.showToast(error: error, success: success)
+                    if success {
+                        NavigationCenter.back()
+                    }
                 }
             }
         
+        // -- Undo & Redo --
         self.buttonUndo
             .onClick { _ in
                 self.getViewModel().undo()
@@ -233,7 +265,7 @@ class ImgEditingScreen: BaseScreen {
                 self.getViewModel().redo()
             }
         
-        // MARK: - Cropping UI action
+        // -- Cropping UI action --
         self.buttonCancelCropping
             .onClick {[unowned self] _ in
                 self.viewModel.resetUIToDefault()
@@ -262,5 +294,13 @@ class ImgEditingScreen: BaseScreen {
             .onClick {[unowned self] _ in
                 self.resetCropViewLayout()
             }
+        
+        // -- Cropping UI action --
+        self.sliderToolValue.addTarget(self, action: #selector(onSliderChanged), for: .valueChanged)
+    }
+    
+    @objc private func onSliderChanged() {
+        let currentColorFilterValue = Double(self.sliderToolValue.value)
+        self.getViewModel().changeColorFilter(val: currentColorFilterValue)
     }
 }

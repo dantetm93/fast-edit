@@ -9,9 +9,10 @@ import Foundation
 
 struct EdittingStep {
     let type: DWrapper.Entity.ImgToolType
-    let value: Double
     let result: UIImage
     var isFirst: Bool = false
+    let brightness: Double
+    let constrast: Double
 }
 
 protocol IEdittingStepHolder {

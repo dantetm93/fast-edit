@@ -12,4 +12,10 @@ extension DWrapper.Entity {
         let name: String
         let type: ImgToolType
     }
+    
+    struct ColorFilterRange {
+        let max: Double
+        let min: Double
+        let current: Double
+    }
 }

@@ -43,6 +43,7 @@
 		BB1C431D2BEB01B10019D09A /* ImgEdittingScreen+ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1C431C2BEB01B10019D09A /* ImgEdittingScreen+ListView.swift */; };
 		BB1C431F2BEB04250019D09A /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1C431E2BEB04250019D09A /* UIColor+Extension.swift */; };
 		BB1C43212BEB17060019D09A /* ImgEditingViewModel+Undo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1C43202BEB17060019D09A /* ImgEditingViewModel+Undo.swift */; };
+		BB1C43232BEB5CE80019D09A /* D_ImgTool+BrightnessUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1C43222BEB5CE80019D09A /* D_ImgTool+BrightnessUseCase.swift */; };
 		BBCF391D2BE980CC00ED3F7D /* ImgEditingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCF391B2BE980CC00ED3F7D /* ImgEditingScreen.swift */; };
 		BBCF391E2BE980CC00ED3F7D /* ImgEditingScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBCF391C2BE980CC00ED3F7D /* ImgEditingScreen.xib */; };
 		BBCF39222BE9874500ED3F7D /* EditingToolCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCF39202BE9874500ED3F7D /* EditingToolCollectionCell.swift */; };
@@ -107,6 +108,7 @@
 		BB1C431C2BEB01B10019D09A /* ImgEdittingScreen+ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImgEdittingScreen+ListView.swift"; sourceTree = "<group>"; };
 		BB1C431E2BEB04250019D09A /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		BB1C43202BEB17060019D09A /* ImgEditingViewModel+Undo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImgEditingViewModel+Undo.swift"; sourceTree = "<group>"; };
+		BB1C43222BEB5CE80019D09A /* D_ImgTool+BrightnessUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "D_ImgTool+BrightnessUseCase.swift"; sourceTree = "<group>"; };
 		BBCF391B2BE980CC00ED3F7D /* ImgEditingScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImgEditingScreen.swift; sourceTree = "<group>"; };
 		BBCF391C2BE980CC00ED3F7D /* ImgEditingScreen.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImgEditingScreen.xib; sourceTree = "<group>"; };
 		BBCF39202BE9874500ED3F7D /* EditingToolCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingToolCollectionCell.swift; sourceTree = "<group>"; };
@@ -236,6 +238,7 @@
 			isa = PBXGroup;
 			children = (
 				BBCF392A2BE98EBB00ED3F7D /* D_ImgTool+CropUseCase.swift */,
+				BB1C43222BEB5CE80019D09A /* D_ImgTool+BrightnessUseCase.swift */,
 			);
 			path = UseCase;
 			sourceTree = "<group>";
@@ -578,6 +581,7 @@
 				BB01E4F52BE874FE002D75FE /* BaseScreen.swift in Sources */,
 				BB1C43112BEA3A120019D09A /* TOCropToolbar.m in Sources */,
 				BBCF39252BE98B9C00ED3F7D /* UIListView+Extension.swift in Sources */,
+				BB1C43232BEB5CE80019D09A /* D_ImgTool+BrightnessUseCase.swift in Sources */,
 				BB1C43122BEA3A120019D09A /* TOCropOverlayView.m in Sources */,
 				BB01E4D42BE84CC4002D75FE /* SceneDelegate.swift in Sources */,
 				BB1C431D2BEB01B10019D09A /* ImgEdittingScreen+ListView.swift in Sources */,

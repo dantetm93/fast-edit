@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import CoreImage
+//import CoreImage
 
 protocol ICropUseCase {
     func cropTo(source: UIImage, angle: Int, rect: CGRect) -> UIImage

@@ -66,8 +66,8 @@ class AlbumManager: BasePhotoPermissionHandler {
         return nil
     }
 
-    func save(image: UIImage , completion : @escaping () -> ()) {
-        if assetCollection == nil {
+    func save(image: UIImage , completion : @escaping (Error?) -> ()) {
+        if self.assetCollection == nil {
             return // if there was an error upstream, skip the save
         }
 
@@ -77,16 +77,14 @@ class AlbumManager: BasePhotoPermissionHandler {
             let albumChangeRequest = PHAssetCollectionChangeRequest(for: self.assetCollection)
             let enumeration: NSArray = [assetPlaceHolder!]
 
-            if self.assetCollection.estimatedAssetCount == 0
-            {
+            if self.assetCollection.estimatedAssetCount == 0 {
                 albumChangeRequest!.addAssets(enumeration)
-            }
-            else {
+            } else {
                 albumChangeRequest!.insertAssets(enumeration, at: [0])
             }
-
-        }, completionHandler: { status , errror in
-            completion( )
+        }, completionHandler: { status , error in
+            AppLogger.d("AlbumManager", String.init(describing: error), "", #line)
+            completion(error)
         })
     }
 }

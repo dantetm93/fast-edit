@@ -17,6 +17,11 @@ extension AppDependencyBuilder {
         return new
     }
     
+    func getColorFilterUseCase(baseLevel: Double) -> IColorFilterUseCase {
+        let new = DWrapper.UseCase.ColorFilter.init(baseLevel: baseLevel)
+        return new
+    }
+    
     func getEdittingStepHolder() -> IEdittingStepHolder {
         let new = EdittingStepHolder.init()
         return new

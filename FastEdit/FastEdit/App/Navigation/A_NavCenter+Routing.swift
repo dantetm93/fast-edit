@@ -21,12 +21,12 @@ extension NavigationCenter {
         viewModel.setCropUseCase(val: cropUseCase)
         let edittingHolder = AppDependencyBuilder.current.getEdittingStepHolder()
         viewModel.setStepHolder(val: edittingHolder)
-        
+        let colorFilterUseCase = AppDependencyBuilder.current.getColorFilterUseCase(baseLevel: 0)
+        viewModel.setColorFilterUseCase(val: colorFilterUseCase)
+
         let screen = ImgEditingScreen()
         screen.setViewModel(val: viewModel)
         screen.view.frame = getCurrentWindow().bounds // Trigger viewDidLoad with correct visible RECT
-//        screen.modalTransitionStyle = .crossDissolve;
-//        present(screen: screen, style: .overFullScreen)
         push(screen: screen)
     }
 }
