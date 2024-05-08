@@ -21,6 +21,9 @@ extension NavigationCenter {
         viewModel.setCropUseCase(val: cropUseCase)
         let screen = ImgEditingScreen()
         screen.setViewModel(val: viewModel)
+        screen.view.frame = getCurrentWindow().bounds // Trigger viewDidLoad with correct visible RECT
+//        screen.modalTransitionStyle = .crossDissolve;
+//        present(screen: screen, style: .overFullScreen)
         push(screen: screen)
     }
 }

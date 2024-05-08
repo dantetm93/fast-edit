@@ -9,7 +9,7 @@ import UIKit
 import CoreImage
 
 protocol ICropUseCase {
-    func cropTo(source: UIImage, rect: CGRect) -> UIImage
+    func cropTo(source: UIImage, angle: Int, rect: CGRect) -> UIImage
     func cropToCenterSquare(source: UIImage) -> UIImage
     func cropToCenterCircle(source: UIImage) -> UIImage
 }
@@ -45,24 +45,34 @@ extension DWrapper.UseCase {
 }
 
 extension DWrapper.UseCase.CropImage: ICropUseCase {
-    func cropTo(source: UIImage, rect: CGRect) -> UIImage {
-        let sourceImage = source
-        let cropRect = rect
+    
+    func cropTo(source: UIImage, angle: Int, rect: CGRect) -> UIImage {
+        //        let sourceImage = source
+        //        let cropRect = rect
+        //
+        //        let sourceCGImage = sourceImage.cgImage!
+        //        let croppedCGImage = sourceCGImage.cropping(
+        //            to: cropRect
+        //        )!
+        //
+        //        // Use the cropped cgImage to initialize a cropped
+        //        // UIImage with the same image scale and orientation
+        //        let croppedImage = UIImage(
+        //            cgImage: croppedCGImage,
+        //            scale: sourceImage.imageRendererFormat.scale,
+        //            orientation: sourceImage.imageOrientation
+        //        )
+        //
+        //        return croppedImage
         
-        let sourceCGImage = sourceImage.cgImage!
-        let croppedCGImage = sourceCGImage.cropping(
-            to: cropRect
-        )!
-
-        // Use the cropped cgImage to initialize a cropped
-        // UIImage with the same image scale and orientation
-        let croppedImage = UIImage(
-            cgImage: croppedCGImage,
-            scale: sourceImage.imageRendererFormat.scale,
-            orientation: sourceImage.imageOrientation
-        )
-
-        return croppedImage
+        var image: UIImage!
+        let isRectEqual = rect.equalTo(.init(origin: .zero, size: source.size))
+        if angle == 0 && isRectEqual {
+            image = source
+        } else {
+            image = source.croppedImage(withFrame: rect, angle: angle, circularClip: false)
+        }
+        return image
     }
     
     func cropToCenterCircle(source: UIImage) -> UIImage {

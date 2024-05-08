@@ -34,6 +34,12 @@
 		BB01E5232BE95D3D002D75FE /* A_PhotoPickerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB01E5222BE95D3D002D75FE /* A_PhotoPickerManager.swift */; };
 		BB01E5252BE967C6002D75FE /* A_PhotoPermissionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB01E5242BE967C6002D75FE /* A_PhotoPermissionHandler.swift */; };
 		BB1C42EC2BE9B8730019D09A /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1C42EB2BE9B8730019D09A /* BaseViewModel.swift */; };
+		BB1C43112BEA3A120019D09A /* TOCropToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = BB1C430A2BEA3A120019D09A /* TOCropToolbar.m */; };
+		BB1C43122BEA3A120019D09A /* TOCropOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = BB1C430B2BEA3A120019D09A /* TOCropOverlayView.m */; };
+		BB1C43132BEA3A120019D09A /* TOCropScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = BB1C430C2BEA3A120019D09A /* TOCropScrollView.m */; };
+		BB1C43142BEA3A120019D09A /* TOCropView.m in Sources */ = {isa = PBXBuildFile; fileRef = BB1C43102BEA3A120019D09A /* TOCropView.m */; };
+		BB1C43182BEAB6610019D09A /* ImgEdittingScreen+CroppingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1C43172BEAB6610019D09A /* ImgEdittingScreen+CroppingView.swift */; };
+		BB1C431B2BEAFA280019D09A /* UIImage+CropRotate.m in Sources */ = {isa = PBXBuildFile; fileRef = BB1C431A2BEAFA280019D09A /* UIImage+CropRotate.m */; };
 		BBCF391D2BE980CC00ED3F7D /* ImgEditingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCF391B2BE980CC00ED3F7D /* ImgEditingScreen.swift */; };
 		BBCF391E2BE980CC00ED3F7D /* ImgEditingScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBCF391C2BE980CC00ED3F7D /* ImgEditingScreen.xib */; };
 		BBCF39222BE9874500ED3F7D /* EditingToolCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCF39202BE9874500ED3F7D /* EditingToolCollectionCell.swift */; };
@@ -82,6 +88,19 @@
 		BB01E5222BE95D3D002D75FE /* A_PhotoPickerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = A_PhotoPickerManager.swift; sourceTree = "<group>"; };
 		BB01E5242BE967C6002D75FE /* A_PhotoPermissionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = A_PhotoPermissionHandler.swift; sourceTree = "<group>"; };
 		BB1C42EB2BE9B8730019D09A /* BaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
+		BB1C43082BEA3A120019D09A /* FastEdit-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FastEdit-Bridging-Header.h"; sourceTree = "<group>"; };
+		BB1C43092BEA3A120019D09A /* TOCropToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TOCropToolbar.h; sourceTree = "<group>"; };
+		BB1C430A2BEA3A120019D09A /* TOCropToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TOCropToolbar.m; sourceTree = "<group>"; };
+		BB1C430B2BEA3A120019D09A /* TOCropOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TOCropOverlayView.m; sourceTree = "<group>"; };
+		BB1C430C2BEA3A120019D09A /* TOCropScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TOCropScrollView.m; sourceTree = "<group>"; };
+		BB1C430D2BEA3A120019D09A /* TOCropView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TOCropView.h; sourceTree = "<group>"; };
+		BB1C430E2BEA3A120019D09A /* TOCropScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TOCropScrollView.h; sourceTree = "<group>"; };
+		BB1C430F2BEA3A120019D09A /* TOCropOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TOCropOverlayView.h; sourceTree = "<group>"; };
+		BB1C43102BEA3A120019D09A /* TOCropView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TOCropView.m; sourceTree = "<group>"; };
+		BB1C43162BEA3A640019D09A /* TOCropViewConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TOCropViewConstants.h; sourceTree = "<group>"; };
+		BB1C43172BEAB6610019D09A /* ImgEdittingScreen+CroppingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImgEdittingScreen+CroppingView.swift"; sourceTree = "<group>"; };
+		BB1C43192BEAFA280019D09A /* UIImage+CropRotate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+CropRotate.h"; sourceTree = "<group>"; };
+		BB1C431A2BEAFA280019D09A /* UIImage+CropRotate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+CropRotate.m"; sourceTree = "<group>"; };
 		BBCF391B2BE980CC00ED3F7D /* ImgEditingScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImgEditingScreen.swift; sourceTree = "<group>"; };
 		BBCF391C2BE980CC00ED3F7D /* ImgEditingScreen.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImgEditingScreen.xib; sourceTree = "<group>"; };
 		BBCF39202BE9874500ED3F7D /* EditingToolCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingToolCollectionCell.swift; sourceTree = "<group>"; };
@@ -138,6 +157,7 @@
 		BB01E4D02BE84CC4002D75FE /* FastEdit */ = {
 			isa = PBXGroup;
 			children = (
+				BB1C42EF2BE9EB6C0019D09A /* Vendor */,
 				BB01E4E82BE84E71002D75FE /* Common */,
 				BB01E4E52BE84DD5002D75FE /* Domain */,
 				BB01E4E62BE84DF0002D75FE /* Transfer */,
@@ -303,6 +323,33 @@
 			path = PhotoPickerManager;
 			sourceTree = "<group>";
 		};
+		BB1C42EF2BE9EB6C0019D09A /* Vendor */ = {
+			isa = PBXGroup;
+			children = (
+				BB1C43072BEA3A030019D09A /* TOCropView */,
+			);
+			path = Vendor;
+			sourceTree = "<group>";
+		};
+		BB1C43072BEA3A030019D09A /* TOCropView */ = {
+			isa = PBXGroup;
+			children = (
+				BB1C43192BEAFA280019D09A /* UIImage+CropRotate.h */,
+				BB1C431A2BEAFA280019D09A /* UIImage+CropRotate.m */,
+				BB1C43162BEA3A640019D09A /* TOCropViewConstants.h */,
+				BB1C430F2BEA3A120019D09A /* TOCropOverlayView.h */,
+				BB1C430B2BEA3A120019D09A /* TOCropOverlayView.m */,
+				BB1C430E2BEA3A120019D09A /* TOCropScrollView.h */,
+				BB1C430C2BEA3A120019D09A /* TOCropScrollView.m */,
+				BB1C43092BEA3A120019D09A /* TOCropToolbar.h */,
+				BB1C430A2BEA3A120019D09A /* TOCropToolbar.m */,
+				BB1C430D2BEA3A120019D09A /* TOCropView.h */,
+				BB1C43102BEA3A120019D09A /* TOCropView.m */,
+				BB1C43082BEA3A120019D09A /* FastEdit-Bridging-Header.h */,
+			);
+			path = TOCropView;
+			sourceTree = "<group>";
+		};
 		BBCF39172BE97A8300ED3F7D /* Resource */ = {
 			isa = PBXGroup;
 			children = (
@@ -320,6 +367,7 @@
 				BBCF392C2BE99D4F00ED3F7D /* ImgEditingViewModel.swift */,
 				BBCF391B2BE980CC00ED3F7D /* ImgEditingScreen.swift */,
 				BBCF391C2BE980CC00ED3F7D /* ImgEditingScreen.xib */,
+				BB1C43172BEAB6610019D09A /* ImgEdittingScreen+CroppingView.swift */,
 			);
 			path = ImgEditingScreen;
 			sourceTree = "<group>";
@@ -384,6 +432,7 @@
 				TargetAttributes = {
 					BB01E4CD2BE84CC4002D75FE = {
 						CreatedOnToolsVersion = 15.2;
+						LastSwiftMigration = 1520;
 					};
 				};
 			};
@@ -498,22 +547,28 @@
 				BBCF391D2BE980CC00ED3F7D /* ImgEditingScreen.swift in Sources */,
 				BB01E5162BE8D48D002D75FE /* HomeScreen.swift in Sources */,
 				BB01E51C2BE8D60B002D75FE /* PermissionDialogScreen.swift in Sources */,
+				BB1C43132BEA3A120019D09A /* TOCropScrollView.m in Sources */,
 				BB01E4F92BE8ADCA002D75FE /* C_Macro.swift in Sources */,
 				BB01E4D22BE84CC4002D75FE /* AppDelegate.swift in Sources */,
+				BB1C43142BEA3A120019D09A /* TOCropView.m in Sources */,
 				BB01E5202BE95B2B002D75FE /* UIViewController+Extension.swift in Sources */,
 				BBCF39302BE9A2B200ED3F7D /* R.generated.swift in Sources */,
 				BB1C42EC2BE9B8730019D09A /* BaseViewModel.swift in Sources */,
 				BB01E4FC2BE8B159002D75FE /* A_AlbumManager.swift in Sources */,
 				BB01E5132BE8D42B002D75FE /* A_NavCenter+Routing.swift in Sources */,
 				BBCF392D2BE99D4F00ED3F7D /* ImgEditingViewModel.swift in Sources */,
+				BB1C43182BEAB6610019D09A /* ImgEdittingScreen+CroppingView.swift in Sources */,
 				BBCF39272BE98D3900ED3F7D /* D_ImgTool+Model.swift in Sources */,
+				BB1C431B2BEAFA280019D09A /* UIImage+CropRotate.m in Sources */,
 				BB01E5052BE8C20E002D75FE /* NSObject+Extension.swift in Sources */,
 				BB01E50D2BE8CD77002D75FE /* SplashScreen.swift in Sources */,
 				BB01E51E2BE9589C002D75FE /* UIView+Extension.swift in Sources */,
 				BBCF39222BE9874500ED3F7D /* EditingToolCollectionCell.swift in Sources */,
 				BB01E5252BE967C6002D75FE /* A_PhotoPermissionHandler.swift in Sources */,
 				BB01E4F52BE874FE002D75FE /* BaseScreen.swift in Sources */,
+				BB1C43112BEA3A120019D09A /* TOCropToolbar.m in Sources */,
 				BBCF39252BE98B9C00ED3F7D /* UIListView+Extension.swift in Sources */,
+				BB1C43122BEA3A120019D09A /* TOCropOverlayView.m in Sources */,
 				BB01E4D42BE84CC4002D75FE /* SceneDelegate.swift in Sources */,
 				BBCF392B2BE98EBB00ED3F7D /* D_ImgTool+CropUseCase.swift in Sources */,
 				BB01E4EA2BE84E7D002D75FE /* A_DependencyBuilder.swift in Sources */,
@@ -670,6 +725,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = RGCNER6888;
@@ -696,6 +752,8 @@
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) LOGGING";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "FastEdit/Vendor/TOCropView/FastEdit-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -707,6 +765,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = RGCNER6888;
@@ -732,6 +791,7 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "FastEdit/Vendor/TOCropView/FastEdit-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

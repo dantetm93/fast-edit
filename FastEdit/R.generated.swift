@@ -41,7 +41,7 @@ struct _R {
     let developmentRegion = "en"
   }
 
-  /// This `_R.image` struct is generated, and contains static references to 18 images.
+  /// This `_R.image` struct is generated, and contains static references to 21 images.
   struct image {
     let bundle: Foundation.Bundle
 
@@ -72,6 +72,9 @@ struct _R {
     /// Image `icon_cut`.
     var icon_cut: RswiftResources.ImageResource { .init(name: "icon_cut", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
 
+    /// Image `icon_eraser`.
+    var icon_eraser: RswiftResources.ImageResource { .init(name: "icon_eraser", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
     /// Image `icon_exposure`.
     var icon_exposure: RswiftResources.ImageResource { .init(name: "icon_exposure", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
 
@@ -83,6 +86,12 @@ struct _R {
 
     /// Image `icon_rotate`.
     var icon_rotate: RswiftResources.ImageResource { .init(name: "icon_rotate", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `icon_rotate_left`.
+    var icon_rotate_left: RswiftResources.ImageResource { .init(name: "icon_rotate_left", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `icon_rotate_right`.
+    var icon_rotate_right: RswiftResources.ImageResource { .init(name: "icon_rotate_right", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
 
     /// Image `icon_saturation`.
     var icon_saturation: RswiftResources.ImageResource { .init(name: "icon_saturation", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
@@ -170,7 +179,10 @@ struct _R {
     func validate() throws {
       if UIKit.UIImage(named: "img_home", in: bundle, compatibleWith: nil) == nil { throw RswiftResources.ValidationError("[R.swift] Image named 'img_home' is used in nib 'HomeScreen', but couldn't be loaded.") }
       if UIKit.UIImage(named: "icon_back", in: bundle, compatibleWith: nil) == nil { throw RswiftResources.ValidationError("[R.swift] Image named 'icon_back' is used in nib 'ImgEditingScreen', but couldn't be loaded.") }
+      if UIKit.UIImage(named: "icon_eraser", in: bundle, compatibleWith: nil) == nil { throw RswiftResources.ValidationError("[R.swift] Image named 'icon_eraser' is used in nib 'ImgEditingScreen', but couldn't be loaded.") }
       if UIKit.UIImage(named: "icon_redo", in: bundle, compatibleWith: nil) == nil { throw RswiftResources.ValidationError("[R.swift] Image named 'icon_redo' is used in nib 'ImgEditingScreen', but couldn't be loaded.") }
+      if UIKit.UIImage(named: "icon_rotate_left", in: bundle, compatibleWith: nil) == nil { throw RswiftResources.ValidationError("[R.swift] Image named 'icon_rotate_left' is used in nib 'ImgEditingScreen', but couldn't be loaded.") }
+      if UIKit.UIImage(named: "icon_rotate_right", in: bundle, compatibleWith: nil) == nil { throw RswiftResources.ValidationError("[R.swift] Image named 'icon_rotate_right' is used in nib 'ImgEditingScreen', but couldn't be loaded.") }
       if UIKit.UIImage(named: "icon_save", in: bundle, compatibleWith: nil) == nil { throw RswiftResources.ValidationError("[R.swift] Image named 'icon_save' is used in nib 'ImgEditingScreen', but couldn't be loaded.") }
       if UIKit.UIImage(named: "icon_undo", in: bundle, compatibleWith: nil) == nil { throw RswiftResources.ValidationError("[R.swift] Image named 'icon_undo' is used in nib 'ImgEditingScreen', but couldn't be loaded.") }
       if UIKit.UIImage(named: "ic_gallery", in: bundle, compatibleWith: nil) == nil { throw RswiftResources.ValidationError("[R.swift] Image named 'ic_gallery' is used in nib 'PermissionDialogScreen', but couldn't be loaded.") }

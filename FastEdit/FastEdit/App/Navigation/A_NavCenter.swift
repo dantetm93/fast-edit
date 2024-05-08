@@ -151,12 +151,21 @@ extension NavigationCenter {
         current._rootNav.popViewController(animated: true)
     }
     
+    static func dismiss() {
+        current._rootNav.topViewController?.presentedViewController?.dismiss(animated: true)
+    }
+    
     static func push(screen: UIViewController) {
         current._rootNav.pushViewController(screen, animated: true)
     }
     
     static func present(screen: UIViewController) {
         screen.modalPresentationStyle = .overFullScreen
+        current._rootNav.topViewController?.present(screen, animated: true)
+    }
+    
+    static func present(screen: UIViewController, style: UIModalPresentationStyle) {
+        screen.modalPresentationStyle = style
         current._rootNav.topViewController?.present(screen, animated: true)
     }
     
