@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 
 public typealias JSONObject = [String: Any]
 public typealias Closure_JSON_Void = (JSONObject?) -> Void
@@ -19,6 +20,11 @@ public typealias ObjectMessHandler<T> = (Result<T, SimpleMessError>) -> Void
 public typealias Closure_Button_Void = (UIButton?) -> Void
 public typealias Closure_View_Void = (UIView?) -> Void
 public typealias Closure_Switch_Void = (UISwitch) -> Void
+
+typealias StringValuePub = CurrentValueSubject<String, Never>
+typealias DoubleValuePub = CurrentValueSubject<Double, Never>
+typealias VoidNoValuePub = PassthroughSubject<Void, Never>
+typealias BoolNoValuePub = PassthroughSubject<Bool, Never>
 
 public struct SimpleMessError: Error {
     let message: String

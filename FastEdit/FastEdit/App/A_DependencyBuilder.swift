@@ -17,6 +17,11 @@ extension AppDependencyBuilder {
         return new
     }
     
+    func getEdittingStepHolder() -> IEdittingStepHolder {
+        let new = EdittingStepHolder.init()
+        return new
+    }
+    
     func getImgEditingViewModel(original: UIImage) -> IImgEditingViewModel {
         let new = ImgEditingViewModel.init(originalImg: original)
         return new

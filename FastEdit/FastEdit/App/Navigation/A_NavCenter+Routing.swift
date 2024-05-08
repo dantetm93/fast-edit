@@ -19,6 +19,9 @@ extension NavigationCenter {
         let cropUseCase = AppDependencyBuilder.current.getCropUseCase()
         let viewModel = AppDependencyBuilder.current.getImgEditingViewModel(original: original)
         viewModel.setCropUseCase(val: cropUseCase)
+        let edittingHolder = AppDependencyBuilder.current.getEdittingStepHolder()
+        viewModel.setStepHolder(val: edittingHolder)
+        
         let screen = ImgEditingScreen()
         screen.setViewModel(val: viewModel)
         screen.view.frame = getCurrentWindow().bounds // Trigger viewDidLoad with correct visible RECT

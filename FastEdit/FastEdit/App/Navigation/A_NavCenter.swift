@@ -98,7 +98,7 @@ class NavigationCenter: NSObject {
             view.layer.cornerCurve = .continuous
             view.layer.cornerRadius = 10
     //        view.dropCommonShadow()
-            view.backgroundColor = bgColor
+            view.backgroundColor = bgColor.darker(by: 15)
             
             view.transform = .init(translationX: 0, y: 500)
             UIView.animate(withDuration: 0.5) {

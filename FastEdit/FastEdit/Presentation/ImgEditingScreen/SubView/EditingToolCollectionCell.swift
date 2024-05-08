@@ -14,7 +14,7 @@ class EditingToolCollectionCell: UICollectionViewCell {
         super.awakeFromNib()
         let colorValue: CGFloat = 235 / 255
         self.backgroundColor = .init(red: colorValue, green: colorValue, blue: colorValue, alpha: 1)
-        self.layer.borderColor = .init(red: 1, green: 0, blue: 0, alpha: 1)
+        self.layer.borderColor = UIColor.black.cgColor
     }
 
 }

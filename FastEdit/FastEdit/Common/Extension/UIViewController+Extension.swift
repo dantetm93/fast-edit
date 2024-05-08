@@ -41,6 +41,25 @@ extension UIViewController {
         self.present(controller, animated: true, completion: nil)
     }
     
+    func showDestructiveConfirm(_ title: String, message: String? = nil,
+                     titleConfirm: String = "Yes",
+                     titleCancel: String = "No",
+                     onConfirm: ((UIAlertAction) -> Void)? = nil,
+                     onCancel: ((UIAlertAction) -> Void)? = nil) {
+        if !Thread.current.isMainThread {
+            DispatchQueue.main.async { [weak self] in
+                self?.showConfirm(title, message: message, onConfirm: onConfirm)
+            }
+            return
+        }
+        
+        let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        controller.view.tintColor = UIWindow.appearance().tintColor
+        controller.addAction(UIAlertAction(title: NSLocalizedString(titleConfirm, comment: ""), style: .destructive, handler: onConfirm))
+        controller.addAction(UIAlertAction(title: NSLocalizedString(titleCancel, comment: ""), style: .default, handler: onCancel))
+        self.present(controller, animated: true, completion: nil)
+    }
+    
     func showConfirmWithOther(_ title: String, message: String? = nil,
                               titleConfirm: String = "Yes",
                               titleCancel: String = "No",

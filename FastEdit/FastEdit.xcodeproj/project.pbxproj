@@ -42,6 +42,7 @@
 		BB1C431B2BEAFA280019D09A /* UIImage+CropRotate.m in Sources */ = {isa = PBXBuildFile; fileRef = BB1C431A2BEAFA280019D09A /* UIImage+CropRotate.m */; };
 		BB1C431D2BEB01B10019D09A /* ImgEdittingScreen+ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1C431C2BEB01B10019D09A /* ImgEdittingScreen+ListView.swift */; };
 		BB1C431F2BEB04250019D09A /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1C431E2BEB04250019D09A /* UIColor+Extension.swift */; };
+		BB1C43212BEB17060019D09A /* ImgEditingViewModel+Undo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1C43202BEB17060019D09A /* ImgEditingViewModel+Undo.swift */; };
 		BBCF391D2BE980CC00ED3F7D /* ImgEditingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCF391B2BE980CC00ED3F7D /* ImgEditingScreen.swift */; };
 		BBCF391E2BE980CC00ED3F7D /* ImgEditingScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBCF391C2BE980CC00ED3F7D /* ImgEditingScreen.xib */; };
 		BBCF39222BE9874500ED3F7D /* EditingToolCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCF39202BE9874500ED3F7D /* EditingToolCollectionCell.swift */; };
@@ -105,6 +106,7 @@
 		BB1C431A2BEAFA280019D09A /* UIImage+CropRotate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+CropRotate.m"; sourceTree = "<group>"; };
 		BB1C431C2BEB01B10019D09A /* ImgEdittingScreen+ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImgEdittingScreen+ListView.swift"; sourceTree = "<group>"; };
 		BB1C431E2BEB04250019D09A /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
+		BB1C43202BEB17060019D09A /* ImgEditingViewModel+Undo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImgEditingViewModel+Undo.swift"; sourceTree = "<group>"; };
 		BBCF391B2BE980CC00ED3F7D /* ImgEditingScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImgEditingScreen.swift; sourceTree = "<group>"; };
 		BBCF391C2BE980CC00ED3F7D /* ImgEditingScreen.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImgEditingScreen.xib; sourceTree = "<group>"; };
 		BBCF39202BE9874500ED3F7D /* EditingToolCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingToolCollectionCell.swift; sourceTree = "<group>"; };
@@ -370,6 +372,7 @@
 			children = (
 				BBCF391F2BE9871700ED3F7D /* SubView */,
 				BBCF392C2BE99D4F00ED3F7D /* ImgEditingViewModel.swift */,
+				BB1C43202BEB17060019D09A /* ImgEditingViewModel+Undo.swift */,
 				BBCF391B2BE980CC00ED3F7D /* ImgEditingScreen.swift */,
 				BBCF391C2BE980CC00ED3F7D /* ImgEditingScreen.xib */,
 				BB1C431C2BEB01B10019D09A /* ImgEdittingScreen+ListView.swift */,
@@ -567,6 +570,7 @@
 				BBCF39272BE98D3900ED3F7D /* D_ImgTool+Model.swift in Sources */,
 				BB1C431B2BEAFA280019D09A /* UIImage+CropRotate.m in Sources */,
 				BB01E5052BE8C20E002D75FE /* NSObject+Extension.swift in Sources */,
+				BB1C43212BEB17060019D09A /* ImgEditingViewModel+Undo.swift in Sources */,
 				BB01E50D2BE8CD77002D75FE /* SplashScreen.swift in Sources */,
 				BB01E51E2BE9589C002D75FE /* UIView+Extension.swift in Sources */,
 				BBCF39222BE9874500ED3F7D /* EditingToolCollectionCell.swift in Sources */,

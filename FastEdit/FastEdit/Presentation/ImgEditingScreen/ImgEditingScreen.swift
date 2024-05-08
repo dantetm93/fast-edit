@@ -152,6 +152,20 @@ class ImgEditingScreen: BaseScreen {
                 self?.resetUIToDefault()
             }
             .store(in: &self.cancellable)
+        
+        self.viewModel.getCanUndoPub()
+            .receive(on: DispatchQueue.main)
+            .sink {[weak self] doable in
+                self?.buttonUndo.interactable = doable
+            }
+            .store(in: &self.cancellable)
+        
+        self.viewModel.getCanRedoPub()
+            .receive(on: DispatchQueue.main)
+            .sink {[weak self] doable in
+                self?.buttonRedo.interactable = doable
+            }
+            .store(in: &self.cancellable)
     }
     
     private func resetUIToDefault() {
@@ -159,6 +173,7 @@ class ImgEditingScreen: BaseScreen {
         self.stackViewCropping.isHidden = true
         self.collectionViewTool.reloadData()
         self.collectionViewTool.isHidden = false
+        self.viewHeader.isHidden = false
         guard let cropView else { return }
         cropView.removeFromSuperview()
         self.cropView = nil
@@ -167,14 +182,14 @@ class ImgEditingScreen: BaseScreen {
     private func updateUIByToolType(val: DWrapper.Entity.ImgToolType) {
         switch val {
         case .crop:
-            self.reCreateCroppingView()
-            self.reLayoutCroppingView()
+            self.viewHeader.isHidden = true
             self.stackViewCropping.isHidden = false
             self.viewContainerSlider.isHidden = true
             self.collectionViewTool.isHidden = true
-//        case .rotate:
-//            break
+            self.reCreateCroppingView()
+            self.reLayoutCroppingView()
         default:
+            self.viewHeader.isHidden = false
             self.viewContainerSlider.isHidden = false
             self.stackViewCropping.isHidden = true
             guard let cropView else { return }
@@ -188,7 +203,7 @@ class ImgEditingScreen: BaseScreen {
             .onClick { _ in
                 if self.getViewModel().needConfirmBeforeQuit() {
                     let mess = "There are some unsaved changes. Do you want to keep editing or exit without saving?"
-                    self.showConfirm(mess,
+                    self.showDestructiveConfirm(mess,
                                      titleConfirm: "Exit",
                                      titleCancel: "Stay",
                                      onConfirm: { _ in NavigationCenter.back() },
@@ -203,8 +218,19 @@ class ImgEditingScreen: BaseScreen {
                 CustomLoading.show()
                 self.getViewModel().saveProcessedImgToGallery {
                     CustomLoading.hide()
+                    NavigationCenter.showToast(error: "Successfully saved to Gallery!", success: true)
                     NavigationCenter.back()
                 }
+            }
+        
+        self.buttonUndo
+            .onClick { _ in
+                self.getViewModel().undo()
+            }
+        
+        self.buttonRedo
+            .onClick { _ in
+                self.getViewModel().redo()
             }
         
         // MARK: - Cropping UI action

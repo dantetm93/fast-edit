@@ -9,22 +9,22 @@ import UIKit
 import Combine
 
 protocol IImgEditingAction {
+    
     func setCropUseCase(val: ICropUseCase)
     func cropTo(rect: CGRect, angle: Int)
     func cropToCenterSquare(source: UIImage)
     func cropToCenterCircle()
     func saveProcessedImgToGallery(done: Closure_Void_Void?)
     func needConfirmBeforeQuit() -> Bool
+    
+    func setStepHolder(val: IEdittingStepHolder)
+    func undo()
+    func redo()
 }
 
 protocol IImgEditingViewModel: IImgEditingAction {
     typealias ProcessedImgPub = CurrentValueSubject<UIImage, Never>
-    typealias CurrentToolNamePub = CurrentValueSubject<String, Never>
-    typealias SingleToolValuePub = CurrentValueSubject<Double, Never>
-    typealias ListToolPub = PassthroughSubject<Void, Never>
-    typealias SliderDisplayPub = PassthroughSubject<Bool, Never>
     typealias ToolTypeChangedPub = PassthroughSubject<DWrapper.Entity.ImgToolType, Never>
-    typealias ResetUIPub = PassthroughSubject<Void, Never>
 
     func load()
     func getOriginalImg() -> UIImage
@@ -37,13 +37,15 @@ protocol IImgEditingViewModel: IImgEditingAction {
     func isSelectingToolAt(index: Int) -> Bool
     func resetUIToDefault()
     
-    func getListToolPub() -> ListToolPub
-    func getSliderDisplayPub() -> SliderDisplayPub
+    func getListToolPub() -> VoidNoValuePub
+    func getSliderDisplayPub() -> BoolNoValuePub
     func getToolTypeChangedPub() -> ToolTypeChangedPub
     func getProcessedImgPub() -> ProcessedImgPub
-    func getCurrentToolNamePub() -> CurrentToolNamePub
-    func getCurrentSingleToolValue() -> SingleToolValuePub
-    func getResetUIPub() -> ResetUIPub
+    func getCurrentToolNamePub() -> StringValuePub
+    func getCurrentSingleToolValue() -> DoubleValuePub
+    func getResetUIPub() -> VoidNoValuePub
+    func getCanUndoPub() -> BoolNoValuePub
+    func getCanRedoPub() -> BoolNoValuePub
 }
 
 class ImgEditingViewModel {
@@ -56,18 +58,25 @@ class ImgEditingViewModel {
     private var currentToolIndex: Int = -1
     
     private let processedImgPub = ProcessedImgPub.init(UIImage())
-    private let currentToolNamePub = CurrentToolNamePub.init("")
-    private let singleToolValuePub = SingleToolValuePub.init(0)
-    private let listToolPub = ListToolPub.init()
-    private let sliderDisplayPub = SliderDisplayPub.init()
+    private let currentToolNamePub = StringValuePub.init("")
+    private let singleToolValuePub = DoubleValuePub.init(0)
+    private let listToolPub = VoidNoValuePub.init()
+    private let sliderDisplayPub = BoolNoValuePub.init()
     private let toolTypeChangedPub = ToolTypeChangedPub.init()
-    private let resetUIPub = ResetUIPub.init()
+    private let resetUIPub = VoidNoValuePub.init()
+    private let canUndoPub = BoolNoValuePub.init()
+    private let canRedoPub = BoolNoValuePub.init()
 
     init(originalImg: UIImage) { self.originalImg = originalImg }
 
     private var cropUseCase: ICropUseCase!
     func setCropUseCase(val: ICropUseCase) {
         self.cropUseCase = val
+    }
+    
+    private var stepHolder: IEdittingStepHolder!
+    func setStepHolder(val: IEdittingStepHolder) {
+        self.stepHolder = val
     }
     
 }
@@ -82,6 +91,9 @@ extension ImgEditingViewModel: IImgEditingViewModel {
         self.sliderDisplayPub.send(false)
         self.processedImgPub.send(self.originalImg)
         self.currentToolNamePub.send("")
+        
+        self.stepHolder.addStep(new: .init(type: .crop, value: 0, result: self.originalImg, isFirst: true))
+        self.updateStateForUndoRedo()
     }
     
     func getOriginalImg() -> UIImage {
@@ -96,26 +108,13 @@ extension ImgEditingViewModel: IImgEditingViewModel {
         if let proccesedImg { return proccesedImg }
         return self.originalImg
     }
-        
-    // MARK: - General handlers
-    func saveProcessedImgToGallery(done: Closure_Void_Void?) {
-        AlbumManager.current.save(image: self.getLastProcessedImg()) {
-            switchToMain {
-                done?()
-            }
-        }
-    }
-    
-    func needConfirmBeforeQuit() -> Bool {
-        return true
-    }
     
     // MARK: - Pub-Sub binding
-    func getListToolPub() -> ListToolPub {
+    func getListToolPub() -> VoidNoValuePub {
         return self.listToolPub
     }
     
-    func getSliderDisplayPub() -> SliderDisplayPub {
+    func getSliderDisplayPub() -> BoolNoValuePub {
         return self.sliderDisplayPub
     }
     
@@ -127,16 +126,24 @@ extension ImgEditingViewModel: IImgEditingViewModel {
         return self.processedImgPub
     }
     
-    func getCurrentToolNamePub() -> CurrentToolNamePub {
+    func getCurrentToolNamePub() -> StringValuePub {
         return self.currentToolNamePub
     }
     
-    func getCurrentSingleToolValue() -> SingleToolValuePub {
+    func getCurrentSingleToolValue() -> DoubleValuePub {
         return self.singleToolValuePub
     }
     
-    func getResetUIPub() -> ResetUIPub {
+    func getResetUIPub() -> VoidNoValuePub {
         return self.resetUIPub
+    }
+    
+    func getCanUndoPub() -> BoolNoValuePub {
+        return self.canUndoPub
+    }
+    
+    func getCanRedoPub() -> BoolNoValuePub {
+        return self.canRedoPub
     }
     
     // MARK: - List view handlers
@@ -181,12 +188,55 @@ extension ImgEditingViewModel: IImgEditingViewModel {
     }
 
     // MARK: - IImgEditingAction
+    func saveProcessedImgToGallery(done: Closure_Void_Void?) {
+        AlbumManager.current.save(image: self.getLastProcessedImg()) {
+            switchToMain {
+                done?()
+            }
+        }
+    }
+    
+    func needConfirmBeforeQuit() -> Bool {
+        return true
+    }
+    
+    private func updateStateForUndoRedo() {
+        self.canUndoPub.send(self.stepHolder.canUndo())
+        self.canRedoPub.send(self.stepHolder.canRedo())
+    }
+    
+    func undo() {
+        if let newCurrentStep = self.stepHolder.undo() {
+            // Still can go back
+            self.proccesedImg = newCurrentStep.result
+            self.processedImgPub.send(newCurrentStep.result)
+        } else {
+            // Cant go back
+            self.proccesedImg = nil
+            self.processedImgPub.send(self.originalImg)
+        }
+        self.updateStateForUndoRedo()
+    }
+    
+    func redo() {
+        if let newCurrentStep = self.stepHolder.redo() {
+            // Still can go next
+            self.proccesedImg = newCurrentStep.result
+            self.processedImgPub.send(newCurrentStep.result)
+        } else {
+            // Cant go next
+        }
+        self.updateStateForUndoRedo()
+    }
+    
     func cropTo(rect: CGRect, angle: Int) {
         let image = self.getLastProcessedImg()
         let result = self.cropUseCase.cropTo(source: image, angle: angle, rect: rect)
         self.proccesedImg = result
         self.processedImgPub.send(result)
         self.resetUIToDefault()
+        self.stepHolder.addStep(new: .init(type: .crop, value: 0, result: result))
+        self.updateStateForUndoRedo()
     }
     
     func cropToCenterSquare(source: UIImage) {
