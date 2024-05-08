@@ -17,7 +17,7 @@ extension ImgEditingScreen: TOCropViewDelegate {
     
     func reCreateCroppingView() {
         if let cropView = self.cropView { cropView.removeFromSuperview() }
-        let image = self.getViewModel().getOriginalImg()
+        let image = self.getViewModel().getLastProcessedImg()
         let style = self.getViewModel().getCroppingStyle()
         let cropView = TOCropView.init(croppingStyle: style, image: image)
         cropView.delegate = self

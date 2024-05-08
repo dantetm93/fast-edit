@@ -40,6 +40,8 @@
 		BB1C43142BEA3A120019D09A /* TOCropView.m in Sources */ = {isa = PBXBuildFile; fileRef = BB1C43102BEA3A120019D09A /* TOCropView.m */; };
 		BB1C43182BEAB6610019D09A /* ImgEdittingScreen+CroppingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1C43172BEAB6610019D09A /* ImgEdittingScreen+CroppingView.swift */; };
 		BB1C431B2BEAFA280019D09A /* UIImage+CropRotate.m in Sources */ = {isa = PBXBuildFile; fileRef = BB1C431A2BEAFA280019D09A /* UIImage+CropRotate.m */; };
+		BB1C431D2BEB01B10019D09A /* ImgEdittingScreen+ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1C431C2BEB01B10019D09A /* ImgEdittingScreen+ListView.swift */; };
+		BB1C431F2BEB04250019D09A /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1C431E2BEB04250019D09A /* UIColor+Extension.swift */; };
 		BBCF391D2BE980CC00ED3F7D /* ImgEditingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCF391B2BE980CC00ED3F7D /* ImgEditingScreen.swift */; };
 		BBCF391E2BE980CC00ED3F7D /* ImgEditingScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBCF391C2BE980CC00ED3F7D /* ImgEditingScreen.xib */; };
 		BBCF39222BE9874500ED3F7D /* EditingToolCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCF39202BE9874500ED3F7D /* EditingToolCollectionCell.swift */; };
@@ -101,6 +103,8 @@
 		BB1C43172BEAB6610019D09A /* ImgEdittingScreen+CroppingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImgEdittingScreen+CroppingView.swift"; sourceTree = "<group>"; };
 		BB1C43192BEAFA280019D09A /* UIImage+CropRotate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+CropRotate.h"; sourceTree = "<group>"; };
 		BB1C431A2BEAFA280019D09A /* UIImage+CropRotate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+CropRotate.m"; sourceTree = "<group>"; };
+		BB1C431C2BEB01B10019D09A /* ImgEdittingScreen+ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImgEdittingScreen+ListView.swift"; sourceTree = "<group>"; };
+		BB1C431E2BEB04250019D09A /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		BBCF391B2BE980CC00ED3F7D /* ImgEditingScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImgEditingScreen.swift; sourceTree = "<group>"; };
 		BBCF391C2BE980CC00ED3F7D /* ImgEditingScreen.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImgEditingScreen.xib; sourceTree = "<group>"; };
 		BBCF39202BE9874500ED3F7D /* EditingToolCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingToolCollectionCell.swift; sourceTree = "<group>"; };
@@ -291,6 +295,7 @@
 				BB01E51D2BE9589C002D75FE /* UIView+Extension.swift */,
 				BB01E51F2BE95B2B002D75FE /* UIViewController+Extension.swift */,
 				BBCF39242BE98B9C00ED3F7D /* UIListView+Extension.swift */,
+				BB1C431E2BEB04250019D09A /* UIColor+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -367,6 +372,7 @@
 				BBCF392C2BE99D4F00ED3F7D /* ImgEditingViewModel.swift */,
 				BBCF391B2BE980CC00ED3F7D /* ImgEditingScreen.swift */,
 				BBCF391C2BE980CC00ED3F7D /* ImgEditingScreen.xib */,
+				BB1C431C2BEB01B10019D09A /* ImgEdittingScreen+ListView.swift */,
 				BB1C43172BEAB6610019D09A /* ImgEdittingScreen+CroppingView.swift */,
 			);
 			path = ImgEditingScreen;
@@ -570,9 +576,11 @@
 				BBCF39252BE98B9C00ED3F7D /* UIListView+Extension.swift in Sources */,
 				BB1C43122BEA3A120019D09A /* TOCropOverlayView.m in Sources */,
 				BB01E4D42BE84CC4002D75FE /* SceneDelegate.swift in Sources */,
+				BB1C431D2BEB01B10019D09A /* ImgEdittingScreen+ListView.swift in Sources */,
 				BBCF392B2BE98EBB00ED3F7D /* D_ImgTool+CropUseCase.swift in Sources */,
 				BB01E4EA2BE84E7D002D75FE /* A_DependencyBuilder.swift in Sources */,
 				BB01E5082BE8CA20002D75FE /* A_NavCenter.swift in Sources */,
+				BB1C431F2BEB04250019D09A /* UIColor+Extension.swift in Sources */,
 				BB01E5232BE95D3D002D75FE /* A_PhotoPickerManager.swift in Sources */,
 				BB01E4EE2BE87386002D75FE /* D_Wrapper.swift in Sources */,
 			);

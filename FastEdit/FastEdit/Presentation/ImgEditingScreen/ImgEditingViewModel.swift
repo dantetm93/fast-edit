@@ -159,7 +159,8 @@ extension ImgEditingViewModel: IImgEditingViewModel {
     
     private func needShowSliderValue(type: DWrapper.Entity.ImgToolType) -> Bool {
         switch type {
-        case .crop, .rotate: return false
+//        case .crop, .rotate: return false
+        case .crop: return false
         default: return true
         }
     }
@@ -195,8 +196,8 @@ extension DWrapper.Entity.ImgToolType {
             return R.image.icon_brightness.callAsFunction()
         case .crop:
             return R.image.icon_cut.callAsFunction()
-        case .rotate:
-            return R.image.icon_rotate.callAsFunction()
+//        case .rotate:
+//            return R.image.icon_rotate.callAsFunction()
         case .constrast:
             return R.image.icon_constrast.callAsFunction()
         case .exposure:
@@ -214,8 +215,8 @@ extension DWrapper.Entity.ImgToolType {
             return "Brightness"
         case .crop:
             return "Crop"
-        case .rotate:
-            return "Rotate"
+//        case .rotate:
+//            return "Rotate"
         case .constrast:
             return "Constrast"
         case .exposure:

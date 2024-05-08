@@ -10,7 +10,7 @@ import Foundation
 extension DWrapper.Entity {
     public enum ImgToolType: CaseIterable {
         case crop
-        case rotate
+//        case rotate
         case brightness
         case constrast
         case exposure
