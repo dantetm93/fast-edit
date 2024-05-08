@@ -1,5 +1,5 @@
 //
-//  ImgEdittingScreen+ListView.swift
+//  ImgEditingScreen+ListView.swift
 //  FastEdit
 //
 //  Created by Tran Manh Quy on 8/5/24.

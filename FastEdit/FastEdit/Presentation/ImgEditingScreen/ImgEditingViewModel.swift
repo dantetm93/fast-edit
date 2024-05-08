@@ -10,14 +10,14 @@ import Combine
 
 protocol IImgEditingAction {
     
-    func setCropUseCase(val: ICropUseCase)
+    func setCropUseCase(val: ISizeEditing)
     func cropTo(rect: CGRect, angle: Int)
     func cropToCenterSquare(source: UIImage)
     func cropToCenterCircle()
     func saveProcessedImgToGallery(done: @escaping (Bool, String) -> Void)
     func needConfirmBeforeQuit() -> Bool
     
-    func setStepHolder(val: IEdittingStepHolder)
+    func setStepHolder(val: IEditingStepHolder)
     func undo()
     func redo()
     
@@ -76,13 +76,13 @@ class ImgEditingViewModel {
 
     init(originalImg: UIImage) { self.originalImg = originalImg }
 
-    private var cropUseCase: ICropUseCase!
-    func setCropUseCase(val: ICropUseCase) {
-        self.cropUseCase = val
+    private var sizeEditingUseCase: ISizeEditing!
+    func setCropUseCase(val: ISizeEditing) {
+        self.sizeEditingUseCase = val
     }
     
-    private var stepHolder: IEdittingStepHolder!
-    func setStepHolder(val: IEdittingStepHolder) {
+    private var stepHolder: IEditingStepHolder!
+    func setStepHolder(val: IEditingStepHolder) {
         self.stepHolder = val
     }
     
@@ -146,7 +146,7 @@ extension ImgEditingViewModel: IImgEditingViewModel {
         
         let brightness = self.colorFilterUseCase.getCurrentBrightLevel()
         let constrast = self.colorFilterUseCase.getCurrentConstrastLevel()
-        let firstStep: EdittingStep = .init(type: .crop,
+        let firstStep: EditingStep = .init(type: .crop,
                                             result: self.originalImg,
                                             isFirst: true,
                                             brightness: brightness,
@@ -319,7 +319,7 @@ extension ImgEditingViewModel: IImgEditingViewModel {
         self.updateStateForUndoRedo()
     }
     
-    private func postHandleAfterUndoRedo(newStep: EdittingStep) {
+    private func postHandleAfterUndoRedo(newStep: EditingStep) {
         switch newStep.type {
         case .crop:
             self.lastResizedImg = newStep.result
@@ -344,7 +344,7 @@ extension ImgEditingViewModel: IImgEditingViewModel {
     // MARK: - Image's frame/side handlers
     func cropTo(rect: CGRect, angle: Int) {
         let lastResizedImg = self.getLastResizedImg()
-        let result = self.cropUseCase.cropTo(source: lastResizedImg, angle: angle, rect: rect)
+        let result = self.sizeEditingUseCase.cropTo(source: lastResizedImg, angle: angle, rect: rect)
         self.lastResizedImg = result // For original img that is used as source img of ColorFiltering
         self.proccesedImg = result // For displaying the final cut and filtered img
         self.colorFilterUseCase.updateSourceImageForPreviewing(source: result)
@@ -362,14 +362,14 @@ extension ImgEditingViewModel: IImgEditingViewModel {
     
     func cropToCenterSquare(source: UIImage) {
         let image = self.getLastProcessedImg()
-        let result = self.cropUseCase.cropToCenterSquare(source: image)
+        let result = self.sizeEditingUseCase.cropToCenterSquare(source: image)
         self.proccesedImg = result
         self.processedImgPub.send(result)
     }
     
     func cropToCenterCircle() {
         let image = self.getLastProcessedImg()
-        let result = self.cropUseCase.cropToCenterCircle(source: image)
+        let result = self.sizeEditingUseCase.cropToCenterCircle(source: image)
         self.proccesedImg = result
         self.processedImgPub.send(result)
     }

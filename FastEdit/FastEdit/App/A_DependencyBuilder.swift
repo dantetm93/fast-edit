@@ -12,8 +12,8 @@ class AppDependencyBuilder {
 }
 
 extension AppDependencyBuilder {
-    func getCropUseCase() -> ICropUseCase {
-        let new = DWrapper.UseCase.CropImage.init()
+    func getCropUseCase() -> ISizeEditing {
+        let new = DWrapper.UseCase.SizeEditing.init()
         return new
     }
     
@@ -22,8 +22,8 @@ extension AppDependencyBuilder {
         return new
     }
     
-    func getEdittingStepHolder() -> IEdittingStepHolder {
-        let new = EdittingStepHolder.init()
+    func getEditingStepHolder() -> IEditingStepHolder {
+        let new = EditingStepHolder.init()
         return new
     }
     

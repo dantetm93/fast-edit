@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct EdittingStep {
+struct EditingStep {
     let type: DWrapper.Entity.ImgToolType
     let result: UIImage
     var isFirst: Bool = false
@@ -15,19 +15,19 @@ struct EdittingStep {
     let constrast: Double
 }
 
-protocol IEdittingStepHolder {
-    func addStep(new: EdittingStep)
+protocol IEditingStepHolder {
+    func addStep(new: EditingStep)
     func canUndo() -> Bool
-    func undo() -> EdittingStep?
+    func undo() -> EditingStep?
     func canRedo() -> Bool
-    func redo() -> EdittingStep?
+    func redo() -> EditingStep?
 }
 
-class EdittingStepHolder: IEdittingStepHolder {
-    var listStep: [EdittingStep] = []
+class EditingStepHolder: IEditingStepHolder {
+    var listStep: [EditingStep] = []
     var currentStepIndex: Int = -1 // listStep is empty
     
-    func addStep(new: EdittingStep) {
+    func addStep(new: EditingStep) {
         if !self.listStep.isEmpty {
             // Remove futute steps if there is a new step added into the list.
             // This new step will be end of the chain.
@@ -45,7 +45,7 @@ class EdittingStepHolder: IEdittingStepHolder {
         return self.listStep.count >= 2 && self.currentStepIndex > 0
     }
     
-    func undo() -> EdittingStep? {
+    func undo() -> EditingStep? {
         if self.currentStepIndex < 0 {
             return nil
         }
@@ -58,7 +58,7 @@ class EdittingStepHolder: IEdittingStepHolder {
         return !self.listStep.isEmpty && self.currentStepIndex < self.listStep.count - 1
     }
     
-    func redo() -> EdittingStep? {
+    func redo() -> EditingStep? {
         let lastIndex = self.listStep.count - 1
         if self.currentStepIndex >= lastIndex {
             return nil

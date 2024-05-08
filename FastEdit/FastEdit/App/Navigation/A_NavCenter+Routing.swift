@@ -19,7 +19,7 @@ extension NavigationCenter {
         let cropUseCase = AppDependencyBuilder.current.getCropUseCase()
         let viewModel = AppDependencyBuilder.current.getImgEditingViewModel(original: original)
         viewModel.setCropUseCase(val: cropUseCase)
-        let edittingHolder = AppDependencyBuilder.current.getEdittingStepHolder()
+        let edittingHolder = AppDependencyBuilder.current.getEditingStepHolder()
         viewModel.setStepHolder(val: edittingHolder)
         let colorFilterUseCase = AppDependencyBuilder.current.getColorFilterUseCase(baseLevel: 0)
         viewModel.setColorFilterUseCase(val: colorFilterUseCase)

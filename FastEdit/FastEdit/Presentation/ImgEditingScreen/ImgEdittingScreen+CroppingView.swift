@@ -1,5 +1,5 @@
 //
-//  ImgEdittingScreen+CroppingView.swift
+//  ImgEditingScreen+CroppingView.swift
 //  FastEdit
 //
 //  Created by Tran Manh Quy on 8/5/24.
