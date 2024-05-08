@@ -13,6 +13,8 @@ protocol IImgEditingAction {
     func cropTo(rect: CGRect, angle: Int)
     func cropToCenterSquare(source: UIImage)
     func cropToCenterCircle()
+    func saveProcessedImgToGallery(done: Closure_Void_Void?)
+    func needConfirmBeforeQuit() -> Bool
 }
 
 protocol IImgEditingViewModel: IImgEditingAction {
@@ -93,6 +95,19 @@ extension ImgEditingViewModel: IImgEditingViewModel {
     func getLastProcessedImg() -> UIImage {
         if let proccesedImg { return proccesedImg }
         return self.originalImg
+    }
+        
+    // MARK: - General handlers
+    func saveProcessedImgToGallery(done: Closure_Void_Void?) {
+        AlbumManager.current.save(image: self.getLastProcessedImg()) {
+            switchToMain {
+                done?()
+            }
+        }
+    }
+    
+    func needConfirmBeforeQuit() -> Bool {
+        return true
     }
     
     // MARK: - Pub-Sub binding

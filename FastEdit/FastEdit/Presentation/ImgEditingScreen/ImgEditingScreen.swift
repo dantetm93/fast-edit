@@ -107,7 +107,7 @@ class ImgEditingScreen: BaseScreen {
     }
     
     private func setupResultImgView() {
-        self.imgViewResult.backgroundColor = UIColor.init(hex: "#F5F5F5")
+        self.imgViewResult.backgroundColor = UIColor.init(hex: "#F0F0F0")
     }
     
     override func binding() {
@@ -158,8 +158,10 @@ class ImgEditingScreen: BaseScreen {
         self.viewContainerSlider.isHidden = true
         self.stackViewCropping.isHidden = true
         self.collectionViewTool.reloadData()
+        self.collectionViewTool.isHidden = false
         guard let cropView else { return }
         cropView.removeFromSuperview()
+        self.cropView = nil
     }
     
     private func updateUIByToolType(val: DWrapper.Entity.ImgToolType) {
@@ -177,13 +179,32 @@ class ImgEditingScreen: BaseScreen {
             self.stackViewCropping.isHidden = true
             guard let cropView else { return }
             cropView.removeFromSuperview()
+            self.cropView = nil
         }
     }
     
     private func setupUIAction() {
         self.buttonBack
             .onClick { _ in
+                if self.getViewModel().needConfirmBeforeQuit() {
+                    let mess = "There are some unsaved changes. Do you want to keep editing or exit without saving?"
+                    self.showConfirm(mess,
+                                     titleConfirm: "Exit",
+                                     titleCancel: "Stay",
+                                     onConfirm: { _ in NavigationCenter.back() },
+                                     onCancel: { _ in })
+                    return
+                }
                 NavigationCenter.back()
+            }
+        
+        self.buttonSave
+            .onClick { _ in
+                CustomLoading.show()
+                self.getViewModel().saveProcessedImgToGallery {
+                    CustomLoading.hide()
+                    NavigationCenter.back()
+                }
             }
         
         // MARK: - Cropping UI action
