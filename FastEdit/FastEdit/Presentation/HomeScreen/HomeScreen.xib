@@ -21,7 +21,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="uWU-gA-P2M">
-                    <rect key="frame" x="40" y="664" width="313" height="114"/>
+                    <rect key="frame" x="40" y="674" width="313" height="114"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Are you ready to make a beautiful image?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O5Z-r9-t6Q">
                             <rect key="frame" x="0.0" y="0.0" width="313" height="49"/>
@@ -51,7 +51,7 @@
                     </subviews>
                 </stackView>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="img_home" translatesAutoresizingMaskIntoConstraints="NO" id="9Ta-iG-aq7">
-                    <rect key="frame" x="40" y="59" width="313" height="605"/>
+                    <rect key="frame" x="40" y="79" width="313" height="595"/>
                 </imageView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
@@ -60,9 +60,9 @@
                 <constraint firstItem="uWU-gA-P2M" firstAttribute="top" secondItem="9Ta-iG-aq7" secondAttribute="bottom" id="Alh-wf-w6q"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="9Ta-iG-aq7" secondAttribute="trailing" constant="40" id="JQ4-Mg-46A"/>
                 <constraint firstItem="uWU-gA-P2M" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="40" id="K9V-gV-gSt"/>
-                <constraint firstItem="9Ta-iG-aq7" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="bGV-VL-OM0"/>
+                <constraint firstItem="9Ta-iG-aq7" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="20" id="bGV-VL-OM0"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="uWU-gA-P2M" secondAttribute="trailing" constant="40" id="bI6-Uv-1gD"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="uWU-gA-P2M" secondAttribute="bottom" constant="40" id="hfK-SY-9np"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="uWU-gA-P2M" secondAttribute="bottom" constant="30" id="hfK-SY-9np"/>
                 <constraint firstItem="9Ta-iG-aq7" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="40" id="odE-Qm-j0y"/>
             </constraints>
             <point key="canvasLocation" x="97" y="-12"/>

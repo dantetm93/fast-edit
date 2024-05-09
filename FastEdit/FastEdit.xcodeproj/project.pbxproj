@@ -781,10 +781,12 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = FastEdit/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Fast Edit";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Fast Edit needs permissions to access the photo gallery for pick and save images.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Fast Edit needs permissions to access the photo gallery for pick and save images.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -820,10 +822,12 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = FastEdit/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Fast Edit";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Fast Edit needs permissions to access the photo gallery for pick and save images.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Fast Edit needs permissions to access the photo gallery for pick and save images.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
