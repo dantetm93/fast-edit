@@ -17,5 +17,15 @@ extension DWrapper.Entity {
         let max: Double
         let min: Double
         let current: Double
+        let center: Double
+        let distance: Double
+        
+        init(max: Double, min: Double, current: Double, center: Double) {
+            self.max = max
+            self.min = min
+            self.current = current
+            self.center = center
+            self.distance = abs(max - min) / 2
+        }
     }
 }

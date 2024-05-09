@@ -8,16 +8,27 @@
 import UIKit
 import CoreImage
 
+fileprivate struct ColorTemperatureInfo {
+    let inputNeutral: CIVector
+    let inputTargetNeutral: CIVector
+}
+
 protocol IColorFilterUseCase {
     func updateSourceImageForPreviewing(source: UIImage)
     func setOnPreviewing(done: @escaping (UIImage) -> Void)
 
     func changeBrightLevel(to: Double, applying: Bool)
     func changeConstrastLevel(to: Double, applying: Bool)
-    
+    func changeExposureLevel(to: Double, applying: Bool)
+    func changeSaturationLevel(to: Double, applying: Bool)
+    func changeTemperatureLevel(to: Double, applying: Bool)
+
     func getCurrentBrightLevel() -> Double
     func getCurrentConstrastLevel() -> Double
-    
+    func getCurrentExposureLevel() -> Double
+    func getCurrentSaturationLevel() -> Double
+    func getCurrentTemperatureLevel() -> Double
+
     func getColorFilterRangeBy(type: DWrapper.Entity.ImgToolType) -> DWrapper.Entity.ColorFilterRange
     func getValidUIImageForSavingInAlbum() -> UIImage?
 }
@@ -27,8 +38,11 @@ extension DWrapper.UseCase {
         private let baseLevel: Double
         private var currentBrightLevel: Double = 0
         private var currentConstrastLevel: Double = 1
+        private var currentSaturationLevel: Double = 0
+        private var currentExposureLevel: Double = 1
+        private var currentTemperatureLevel: Double = 1
 
-        private var aCIImage = CIImage()
+        private var lastFilteredImg = CIImage()
         private var colorFilter: CIFilter!
         private let contextCI = CIContext.init(options: nil)
         private var lastResult = UIImage()
@@ -36,24 +50,45 @@ extension DWrapper.UseCase {
         private var onPreviewing: (UIImage) -> Void = { _ in }
         private var isFinishFirstSetup = false
         
+        private var temperatureFilter: CIFilter!
+        private var exposureAdjustFilter: CIFilter!
+        
         public init(baseLevel: Double) {
             self.baseLevel = baseLevel
-//            self.currentBrightLevel = baseLevel
-//            self.currentConstrastLevel = baseLevel
-            self.colorFilter = CIFilter(name: "CIColorControls");
+            self.colorFilter = CIFilter(name: "CIColorControls")
+            let tempatureAndTintFilter = CIFilter(name: "CITemperatureAndTint")
+            self.temperatureFilter = tempatureAndTintFilter
+            let exposureAdjustFilter = CIFilter(name: "CIExposureAdjust")
+            self.exposureAdjustFilter = exposureAdjustFilter
+            
         }
     }
 }
 
 extension DWrapper.UseCase.ColorFilter: IColorFilterUseCase {
     
+    // MARK: - Getters
     func getColorFilterRangeBy(type: DWrapper.Entity.ImgToolType) -> DWrapper.Entity.ColorFilterRange {
         switch type {
-        case .crop: return .init(max: 0, min: 0, current: 0)
-        case .brightness: return .init(max: 1, min: -1, current: self.currentBrightLevel)
-        case .constrast: return .init(max: 2, min: 0, current: self.currentConstrastLevel)
-        default: return .init(max: 0, min: 0, current: 0)
+        case .crop: return .init(max: 0, min: 0, current: 0, center: 1)
+        case .brightness: return .init(max: 1, min: -1, current: self.currentBrightLevel, center: 0)
+        case .constrast: return .init(max: 2, min: 0, current: self.currentConstrastLevel, center: 1)
+        case .saturation: return .init(max: 2, min: 0, current: self.currentSaturationLevel, center: 1)
+        case .exposure: return .init(max: 2, min: 0, current: self.currentExposureLevel, center: 1)
+        case .temperature: return .init(max: 2, min: 0, current: self.currentTemperatureLevel, center: 1)
         }
+    }
+    
+    func getValidUIImageForSavingInAlbum() -> UIImage? {
+        AppLogger.d("ColorFilter", "getValidUIImageForSavingInAlbum", "", #line)
+        let filteredImage = self.lastFilteredImg
+        guard let cgimg = self.contextCI.createCGImage(filteredImage, from: filteredImage.extent) else {
+            AppLogger.error("ColorFilter", "getValidUIImageForSavingInAlbum: [Couldnt generate CGImage from CIImage]", "", #line)
+            return nil
+        }
+        let finalValidImage = UIImage.init(cgImage: cgimg)
+        AppLogger.d("ColorFilter", "getValidUIImageForSavingInAlbum: [DONE] UIImg Size \(finalValidImage.size)", "", #line)
+        return finalValidImage
     }
  
     func getCurrentBrightLevel() -> Double {
@@ -64,34 +99,43 @@ extension DWrapper.UseCase.ColorFilter: IColorFilterUseCase {
         return self.currentConstrastLevel
     }
     
+    func getCurrentExposureLevel() -> Double {
+        return self.currentExposureLevel
+    }
+    
+    func getCurrentSaturationLevel() -> Double {
+        return self.currentSaturationLevel
+    }
+    
+    func getCurrentTemperatureLevel() -> Double {
+        return self.currentTemperatureLevel
+    }
+    
+    // MARK: - Setters and Filtering Action
     func setOnPreviewing(done: @escaping (UIImage) -> Void) {
         self.onPreviewing = done
     }
     
     func updateSourceImageForPreviewing(source: UIImage) {
-        let aUIImage = source
-        guard let aCGImage = aUIImage.cgImage else { return }
-        self.aCIImage = CIImage(cgImage: aCGImage)
-        self.colorFilter.setValue(self.aCIImage, forKey: kCIInputImageKey)
-        
-        if self.isFinishFirstSetup {
-            if let filteredImage = self.colorFilter.outputImage {
-                let uiImage = UIImage.init(ciImage: filteredImage)
-                self.onPreviewing(uiImage)
-            }
-        }
-        self.isFinishFirstSetup = true
+        let anUIImage = source
+        guard let aCGImage = anUIImage.cgImage else { return }
+        let aCIImage = CIImage(cgImage: aCGImage)
+        self.colorFilter.setValue(aCIImage, forKey: kCIInputImageKey)
+        self.lastFilteredImg = aCIImage
+        self.combineAllFilter()
     }
     
+    // MARK: - Handlers of Color Filter
     func changeBrightLevel(to: Double, applying: Bool) {
         AppLogger.d("ColorFilter", "changeBrightLevel \(to)", "", #line)
         self.currentBrightLevel = to
         if applying {
             self.colorFilter.setValue(NSNumber.init(floatLiteral: to), forKey: kCIInputBrightnessKey)
-            if let filteredImage = self.colorFilter.outputImage {
-                let uiImage = UIImage.init(ciImage: filteredImage)
-                self.onPreviewing(uiImage)
-            }
+//            if let filteredImage = self.colorFilter.outputImage {
+//                let uiImage = UIImage.init(ciImage: filteredImage)
+//                self.onPreviewing(uiImage)
+//            }
+            self.combineAllFilter()
         }
     }
     
@@ -100,25 +144,92 @@ extension DWrapper.UseCase.ColorFilter: IColorFilterUseCase {
         self.currentConstrastLevel = to
         if applying {
             self.colorFilter.setValue(NSNumber.init(floatLiteral: to), forKey: kCIInputContrastKey)
-            if let filteredImage = self.colorFilter.outputImage {
-                let uiImage = UIImage.init(ciImage: filteredImage)
-                self.onPreviewing(uiImage)
-            }
+//            if let filteredImage = self.colorFilter.outputImage {
+//                let uiImage = UIImage.init(ciImage: filteredImage)
+//                self.onPreviewing(uiImage)
+//            }
+            self.combineAllFilter()
         }
     }
     
-    func getValidUIImageForSavingInAlbum() -> UIImage? {
-        AppLogger.d("ColorFilter", "getValidUIImageForSavingInAlbum", "", #line)
-        guard let filteredImage = self.colorFilter.outputImage else {
-            AppLogger.error("ColorFilter", "getValidUIImageForSavingInAlbum: [Filtered CIImage is NULL]", "", #line)
-            return nil
+    func changeSaturationLevel(to: Double, applying: Bool) {
+        AppLogger.d("ColorFilter", "changeSaturationLevel \(to)", "", #line)
+        self.currentSaturationLevel = to
+        if applying {
+            self.colorFilter.setValue(NSNumber.init(floatLiteral: to), forKey: kCIInputSaturationKey)
+//            if let filteredImage = self.colorFilter.outputImage {
+//                let uiImage = UIImage.init(ciImage: filteredImage)
+//                self.onPreviewing(uiImage)
+//            }
+            self.combineAllFilter()
         }
-        guard let cgimg = self.contextCI.createCGImage(filteredImage, from: filteredImage.extent) else {
-            AppLogger.error("ColorFilter", "getValidUIImageForSavingInAlbum: [Couldnt generate CGImage from CIImage]", "", #line)
-            return nil
+    }
+    
+    // MARK: - Handlers of Exposure Adjust Filter
+    func changeExposureLevel(to: Double, applying: Bool) {
+        AppLogger.d("ColorFilter", "changeExposureLevel \(to)", "", #line)
+        self.currentExposureLevel = to
+        if applying {
+            self.exposureAdjustFilter.setValue(NSNumber.init(floatLiteral: to), forKey: kCIInputEVKey)
+//            if let filteredImage = self.colorFilter.outputImage {
+//                let uiImage = UIImage.init(ciImage: filteredImage)
+//                self.onPreviewing(uiImage)
+//            }
+            self.combineAllFilter()
         }
-        let finalValidImage = UIImage.init(cgImage: cgimg)
-        AppLogger.d("ColorFilter", "getValidUIImageForSavingInAlbum: [DONE] UIImg Size \(finalValidImage.size)", "", #line)
-        return finalValidImage
+    }
+    
+    // MARK: - Handlers of Temperature Filter
+    private func getTemperatureInfoFrom(temperatureLevel: Double) -> ColorTemperatureInfo {
+        // Warm
+        return .init(inputNeutral: .init(x: 16000, y: 1000), inputTargetNeutral: CIVector(x: 1000, y: 500))
+    }
+    
+    func changeTemperatureLevel(to: Double, applying: Bool) {
+        AppLogger.d("ColorFilter", "changeTemperatureLevel \(to)", "", #line)
+        self.currentTemperatureLevel = to
+        if applying {
+            let tempInfo = self.getTemperatureInfoFrom(temperatureLevel: to)
+            self.temperatureFilter.setValue(tempInfo.inputNeutral, forKey: "inputNeutral")
+            self.temperatureFilter.setValue(tempInfo.inputTargetNeutral, forKey: "inputTargetNeutral")
+            
+            self.combineAllFilter()
+        }
+    }
+    
+    private func combineAllFilter() {
+        AppLogger.d("ColorFilter", "[START] combineAllFilter", "", #line)
+        // Apply 1st filtering
+        guard let colorFilteredImg = self.colorFilter.outputImage else {
+            AppLogger.error("ColorFilter", "[colorFilter] FAILED, show [lastFilteredImg]", "", #line)
+            let uiImage = UIImage.init(ciImage: self.lastFilteredImg)
+            return self.onPreviewing(uiImage)
+        }
+        AppLogger.d("ColorFilter", "[colorFilter] DONE, move to [temperatureFilter]", "", #line)
+        self.lastFilteredImg = colorFilteredImg
+        
+        // Apply 2nd filtering
+        self.temperatureFilter.setValue(colorFilteredImg, forKey: kCIInputImageKey)
+        guard let temperatureFilteredImg = self.temperatureFilter.outputImage else {
+            AppLogger.error("ColorFilter", "temperatureFilter FAILED, show [colorFilteredImg]", "", #line)
+            let uiImage = UIImage.init(ciImage: colorFilteredImg)
+            return self.onPreviewing(uiImage)
+        }
+        AppLogger.d("ColorFilter", "[temperatureFilter] DONE, move to [exposureAdjustFilter]", "", #line)
+        self.lastFilteredImg = temperatureFilteredImg
+        
+        // Apply 3rd filtering
+        self.exposureAdjustFilter.setValue(temperatureFilteredImg, forKey: kCIInputImageKey)
+        guard let exposureAdjustedImg = self.exposureAdjustFilter.outputImage else {
+            AppLogger.error("ColorFilter", "[exposureAdjustFilter] FAILED, show [temperatureFilteredImg]", "", #line)
+            let uiImage = UIImage.init(ciImage: temperatureFilteredImg)
+            return self.onPreviewing(uiImage)
+        }
+        self.lastFilteredImg = exposureAdjustedImg
+        
+        // All filtering applied
+        let combinedImg = UIImage.init(ciImage: exposureAdjustedImg)
+        AppLogger.d("ColorFilter", "[combineAllFilter] DONE, show [combinedImg] \(combinedImg.size)", "", #line)
+        return self.onPreviewing(combinedImg)
     }
 }

@@ -44,6 +44,8 @@
 		BB1C431F2BEB04250019D09A /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1C431E2BEB04250019D09A /* UIColor+Extension.swift */; };
 		BB1C43212BEB17060019D09A /* ImgEditingViewModel+Undo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1C43202BEB17060019D09A /* ImgEditingViewModel+Undo.swift */; };
 		BB1C43232BEB5CE80019D09A /* D_ImgTool+ColorFilterUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1C43222BEB5CE80019D09A /* D_ImgTool+ColorFilterUseCase.swift */; };
+		BB1C43252BEC456D0019D09A /* ImgEditingViewModel+Support.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1C43242BEC456D0019D09A /* ImgEditingViewModel+Support.swift */; };
+		BB1C432A2BEC48AD0019D09A /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1C43292BEC48AD0019D09A /* PaddingLabel.swift */; };
 		BBCF391D2BE980CC00ED3F7D /* ImgEditingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCF391B2BE980CC00ED3F7D /* ImgEditingScreen.swift */; };
 		BBCF391E2BE980CC00ED3F7D /* ImgEditingScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBCF391C2BE980CC00ED3F7D /* ImgEditingScreen.xib */; };
 		BBCF39222BE9874500ED3F7D /* EditingToolCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCF39202BE9874500ED3F7D /* EditingToolCollectionCell.swift */; };
@@ -109,6 +111,8 @@
 		BB1C431E2BEB04250019D09A /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		BB1C43202BEB17060019D09A /* ImgEditingViewModel+Undo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImgEditingViewModel+Undo.swift"; sourceTree = "<group>"; };
 		BB1C43222BEB5CE80019D09A /* D_ImgTool+ColorFilterUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "D_ImgTool+ColorFilterUseCase.swift"; sourceTree = "<group>"; };
+		BB1C43242BEC456D0019D09A /* ImgEditingViewModel+Support.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImgEditingViewModel+Support.swift"; sourceTree = "<group>"; };
+		BB1C43292BEC48AD0019D09A /* PaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
 		BBCF391B2BE980CC00ED3F7D /* ImgEditingScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImgEditingScreen.swift; sourceTree = "<group>"; };
 		BBCF391C2BE980CC00ED3F7D /* ImgEditingScreen.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImgEditingScreen.xib; sourceTree = "<group>"; };
 		BBCF39202BE9874500ED3F7D /* EditingToolCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingToolCollectionCell.swift; sourceTree = "<group>"; };
@@ -223,6 +227,7 @@
 		BB01E4EF2BE87419002D75FE /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				BB1C43282BEC48A30019D09A /* Custom */,
 				BBCF39312BE9AE4000ED3F7D /* Utility */,
 				BBCF391A2BE980BA00ED3F7D /* ImgEditingScreen */,
 				BB01E5182BE8D5F8002D75FE /* PermissionScreen */,
@@ -360,6 +365,36 @@
 			path = TOCropView;
 			sourceTree = "<group>";
 		};
+		BB1C43262BEC45890019D09A /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				BBCF392C2BE99D4F00ED3F7D /* ImgEditingViewModel.swift */,
+				BB1C43202BEB17060019D09A /* ImgEditingViewModel+Undo.swift */,
+				BB1C43242BEC456D0019D09A /* ImgEditingViewModel+Support.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		BB1C43272BEC45970019D09A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				BBCF391F2BE9871700ED3F7D /* SubView */,
+				BBCF391B2BE980CC00ED3F7D /* ImgEditingScreen.swift */,
+				BBCF391C2BE980CC00ED3F7D /* ImgEditingScreen.xib */,
+				BB1C431C2BEB01B10019D09A /* ImgEdittingScreen+ListView.swift */,
+				BB1C43172BEAB6610019D09A /* ImgEdittingScreen+CroppingView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		BB1C43282BEC48A30019D09A /* Custom */ = {
+			isa = PBXGroup;
+			children = (
+				BB1C43292BEC48AD0019D09A /* PaddingLabel.swift */,
+			);
+			path = Custom;
+			sourceTree = "<group>";
+		};
 		BBCF39172BE97A8300ED3F7D /* Resource */ = {
 			isa = PBXGroup;
 			children = (
@@ -373,13 +408,8 @@
 		BBCF391A2BE980BA00ED3F7D /* ImgEditingScreen */ = {
 			isa = PBXGroup;
 			children = (
-				BBCF391F2BE9871700ED3F7D /* SubView */,
-				BBCF392C2BE99D4F00ED3F7D /* ImgEditingViewModel.swift */,
-				BB1C43202BEB17060019D09A /* ImgEditingViewModel+Undo.swift */,
-				BBCF391B2BE980CC00ED3F7D /* ImgEditingScreen.swift */,
-				BBCF391C2BE980CC00ED3F7D /* ImgEditingScreen.xib */,
-				BB1C431C2BEB01B10019D09A /* ImgEdittingScreen+ListView.swift */,
-				BB1C43172BEAB6610019D09A /* ImgEdittingScreen+CroppingView.swift */,
+				BB1C43272BEC45970019D09A /* View */,
+				BB1C43262BEC45890019D09A /* ViewModel */,
 			);
 			path = ImgEditingScreen;
 			sourceTree = "<group>";
@@ -560,6 +590,7 @@
 				BB01E5162BE8D48D002D75FE /* HomeScreen.swift in Sources */,
 				BB01E51C2BE8D60B002D75FE /* PermissionDialogScreen.swift in Sources */,
 				BB1C43132BEA3A120019D09A /* TOCropScrollView.m in Sources */,
+				BB1C432A2BEC48AD0019D09A /* PaddingLabel.swift in Sources */,
 				BB01E4F92BE8ADCA002D75FE /* C_Macro.swift in Sources */,
 				BB01E4D22BE84CC4002D75FE /* AppDelegate.swift in Sources */,
 				BB1C43142BEA3A120019D09A /* TOCropView.m in Sources */,
@@ -573,6 +604,7 @@
 				BBCF39272BE98D3900ED3F7D /* D_ImgTool+Model.swift in Sources */,
 				BB1C431B2BEAFA280019D09A /* UIImage+CropRotate.m in Sources */,
 				BB01E5052BE8C20E002D75FE /* NSObject+Extension.swift in Sources */,
+				BB1C43252BEC456D0019D09A /* ImgEditingViewModel+Support.swift in Sources */,
 				BB1C43212BEB17060019D09A /* ImgEditingViewModel+Undo.swift in Sources */,
 				BB01E50D2BE8CD77002D75FE /* SplashScreen.swift in Sources */,
 				BB01E51E2BE9589C002D75FE /* UIView+Extension.swift in Sources */,

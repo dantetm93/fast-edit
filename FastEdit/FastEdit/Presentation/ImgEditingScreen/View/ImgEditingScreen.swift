@@ -25,6 +25,7 @@ class ImgEditingScreen: BaseScreen {
     
     @IBOutlet weak var collectionViewTool: UICollectionView!
 
+    @IBOutlet weak var labelUndoRedoStatus: PaddingLabel!
     @IBOutlet weak var stackViewCropping: UIStackView!
     @IBOutlet weak var buttonCancelCropping: UIButton!
     @IBOutlet weak var buttonRotateLeft: UIButton!
@@ -143,6 +144,36 @@ class ImgEditingScreen: BaseScreen {
             }
             .store(in: &self.cancellable)
         
+        self.viewModel.getColorFilterTrendPub()
+            .receive(on: DispatchQueue.main)
+            .sink {[weak self] trend in
+                guard let self else { return }
+                switch trend {
+                case .base:
+                    self.labelCurrentTool.textColor = self.sliderToolValue.thumbTintColor
+                case .decrease:
+                    self.labelCurrentTool.textColor = self.sliderToolValue.minimumTrackTintColor
+                case .increase:
+                    self.labelCurrentTool.textColor = self.sliderToolValue.maximumTrackTintColor
+                }
+            }
+            .store(in: &self.cancellable)
+        
+        self.viewModel.getUndoRedoStatusPub()
+            .receive(on: DispatchQueue.main)
+            .sink {[weak self] statusText in
+                guard let self else { return }
+                self.labelUndoRedoStatus.text = statusText
+            }
+            .store(in: &self.cancellable)
+        
+        self.viewModel.getUndoRedoStatusPub()
+            .debounce(for: 3, scheduler: DispatchQueue.main)
+            .sink {[weak self] statusText in
+                guard let self else { return }
+                self.labelUndoRedoStatus.text = ""
+            }
+            .store(in: &self.cancellable)
         
         // -- UI visibility --
         self.viewModel.getSliderDisplayPub()
@@ -200,6 +231,7 @@ class ImgEditingScreen: BaseScreen {
         self.collectionViewTool.reloadData()
         self.collectionViewTool.isHidden = false
         self.viewHeader.isHidden = false
+        self.labelUndoRedoStatus.text = ""
         guard let cropView else { return }
         cropView.removeFromSuperview()
         self.cropView = nil

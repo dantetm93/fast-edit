@@ -29,6 +29,7 @@ protocol IImgEditingViewModel: IImgEditingAction {
     typealias ProcessedImgPub = CurrentValueSubject<UIImage, Never>
     typealias ToolTypeChangedPub = PassthroughSubject<DWrapper.Entity.ImgToolType, Never>
     typealias ColorFilterRangePub = PassthroughSubject<DWrapper.Entity.ColorFilterRange, Never>
+    typealias ColorFilterValueTrendPub = PassthroughSubject<ColorFilterValueTrend, Never>
 
     func load()
     func getOriginalImg() -> UIImage
@@ -51,6 +52,8 @@ protocol IImgEditingViewModel: IImgEditingAction {
     func getCanUndoPub() -> BoolNoValuePub
     func getCanRedoPub() -> BoolNoValuePub
     func getColorFilterRangePub() -> ColorFilterRangePub
+    func getColorFilterTrendPub() -> ColorFilterValueTrendPub
+    func getUndoRedoStatusPub() -> StringValuePub
 }
 
 class ImgEditingViewModel {
@@ -73,6 +76,8 @@ class ImgEditingViewModel {
     private let canUndoPub = BoolNoValuePub.init()
     private let canRedoPub = BoolNoValuePub.init()
     private let colorFilterRangePub = ColorFilterRangePub.init()
+    private let colorFilterValueTrendPub = ColorFilterValueTrendPub.init()
+    private let undoRedoStatus = StringValuePub.init("")
 
     init(originalImg: UIImage) { self.originalImg = originalImg }
 
@@ -110,7 +115,7 @@ class ImgEditingViewModel {
         
         self.colorFilterDebouncing
             .debounce(for: 0.3, scheduler: self.defaultSerialQueue)
-            .sink {[weak self] toolType in
+            .sink {[weak self] tool in
                 guard let self else { return }
                 
                 if self.isColorFilterTriggeredByUndoRedo {
@@ -118,17 +123,48 @@ class ImgEditingViewModel {
                     return
                 }
                 
-                let range = self.colorFilterUseCase.getColorFilterRangeBy(type: toolType.type)
-                AppLogger.d("ImgEditingViewModel", "User just applied: \(toolType.name) with value: \(range.current)", "", #line)
-                let brightness = self.colorFilterUseCase.getCurrentBrightLevel()
-                let constrast = self.colorFilterUseCase.getCurrentConstrastLevel()
-                self.stepHolder.addStep(new: .init(type: toolType.type,
-                                                   result: UIImage.init(),
-                                                   brightness: brightness,
-                                                   constrast: constrast))
+                self.addColorFilterToEditingStep(type: tool.type)
                 self.updateStateForUndoRedo()
                 
             }.store(in: &self.cancellable)
+    }
+    
+    private func addSizeEdittingToEditingStep(image: UIImage) {
+        let croppingType = DWrapper.Entity.ImgToolType.crop
+        AppLogger.d("ImgEditingViewModel", "User just applied: \(croppingType.getToolName()) with value: \(String.init(describing: image.size))", "", #line)
+        
+        let brightness = self.colorFilterUseCase.getCurrentBrightLevel()
+        let constrast = self.colorFilterUseCase.getCurrentConstrastLevel()
+        let exposure = self.colorFilterUseCase.getCurrentExposureLevel()
+        let saturation = self.colorFilterUseCase.getCurrentSaturationLevel()
+        let temperature = self.colorFilterUseCase.getCurrentTemperatureLevel()
+        
+        self.stepHolder.addStep(new: .init(type: croppingType,
+                                           result: image,
+                                           brightness: brightness,
+                                           constrast: constrast,
+                                           exposure: exposure,
+                                           saturation: saturation,
+                                           temperature: temperature))
+    }
+    
+    private func addColorFilterToEditingStep(type: DWrapper.Entity.ImgToolType) {
+        let range = self.colorFilterUseCase.getColorFilterRangeBy(type: type)
+        AppLogger.d("ImgEditingViewModel", "User just applied: \(type.getToolName()) with value: \(range.current)", "", #line)
+        
+        let brightness = self.colorFilterUseCase.getCurrentBrightLevel()
+        let constrast = self.colorFilterUseCase.getCurrentConstrastLevel()
+        let exposure = self.colorFilterUseCase.getCurrentExposureLevel()
+        let saturation = self.colorFilterUseCase.getCurrentSaturationLevel()
+        let temperature = self.colorFilterUseCase.getCurrentTemperatureLevel()
+        
+        self.stepHolder.addStep(new: .init(type: type,
+                                           result: UIImage.init(),
+                                           brightness: brightness,
+                                           constrast: constrast,
+                                           exposure: exposure,
+                                           saturation: saturation,
+                                           temperature: temperature))
     }
     
 }
@@ -144,14 +180,7 @@ extension ImgEditingViewModel: IImgEditingViewModel {
         self.processedImgPub.send(self.originalImg)
         self.currentToolNamePub.send("")
         
-        let brightness = self.colorFilterUseCase.getCurrentBrightLevel()
-        let constrast = self.colorFilterUseCase.getCurrentConstrastLevel()
-        let firstStep: EditingStep = .init(type: .crop,
-                                            result: self.originalImg,
-                                            isFirst: true,
-                                            brightness: brightness,
-                                            constrast: constrast)
-        self.stepHolder.addStep(new: firstStep)
+        self.addSizeEdittingToEditingStep(image: self.originalImg)
         self.updateStateForUndoRedo()
         
         self.colorFilterUseCase.updateSourceImageForPreviewing(source: self.originalImg)
@@ -204,6 +233,14 @@ extension ImgEditingViewModel: IImgEditingViewModel {
         return self.colorFilterRangePub
     }
     
+    func getColorFilterTrendPub() -> ColorFilterValueTrendPub {
+        return self.colorFilterValueTrendPub
+    }
+    
+    func getUndoRedoStatusPub() -> StringValuePub {
+        return self.undoRedoStatus
+    }
+    
     // MARK: - List view handlers
     func getListImgToolCount() -> Int {
         return self.listImgTool.count
@@ -216,8 +253,7 @@ extension ImgEditingViewModel: IImgEditingViewModel {
     func selectImgToolAt(index: Int) {
         self.currentToolIndex = index
         let item = self.getImgToolAt(index: index)
-        let name = item.type.getToolName()
-        self.currentToolNamePub.send(name)
+        self.showCurrentToolWithValue()
         
         let needShowSlider = self.needShowSliderValue(type: item.type)
         self.sliderDisplayPub.send(needShowSlider)
@@ -302,19 +338,31 @@ extension ImgEditingViewModel: IImgEditingViewModel {
     }
     
     func undo() {
+        AppLogger.d("ImgEditingViewModel", "User clicks [UNDO]", "", #line)
         if let newCurrentStep = self.stepHolder.undo() {
             // Still can go back
             self.isColorFilterTriggeredByUndoRedo = true
             self.postHandleAfterUndoRedo(newStep: newCurrentStep)
+            self.undoRedoStatus.send("[Undo] \(newCurrentStep.type.getToolName())")
+            if self.needUpdateColorFilterUIAfterUndoRedo(step: newCurrentStep) {
+                self.updateColorFilterSlider(step: newCurrentStep)
+                self.showCurrentToolWithValue()
+            }
         }
         self.updateStateForUndoRedo()
     }
     
     func redo() {
+        AppLogger.d("ImgEditingViewModel", "User clicks [REDO]", "", #line)
         if let newCurrentStep = self.stepHolder.redo() {
             // Still can go next
             self.isColorFilterTriggeredByUndoRedo = true
             self.postHandleAfterUndoRedo(newStep: newCurrentStep)
+            self.undoRedoStatus.send("[Redo] \(newCurrentStep.type.getToolName())")
+            if self.needUpdateColorFilterUIAfterUndoRedo(step: newCurrentStep) {
+                self.updateColorFilterSlider(step: newCurrentStep)
+                self.showCurrentToolWithValue()
+            }
         }
         self.updateStateForUndoRedo()
     }
@@ -331,14 +379,13 @@ extension ImgEditingViewModel: IImgEditingViewModel {
             self.colorFilterUseCase.changeBrightLevel(to: newStep.brightness, applying: true)
         case .constrast:
             self.colorFilterUseCase.changeConstrastLevel(to: newStep.constrast, applying: true)
-        case .exposure: break
-            // TODO: exposure
-        case .temperature: break
-            // TODO: temperature
-        case .saturation: break
-            // TODO: saturation
+        case .exposure:
+            self.colorFilterUseCase.changeExposureLevel(to: newStep.constrast, applying: true)
+        case .saturation:
+            self.colorFilterUseCase.changeSaturationLevel(to: newStep.constrast, applying: true)
+        case .temperature:
+            self.colorFilterUseCase.changeTemperatureLevel(to: newStep.constrast, applying: true)
         }
-        
     }
     
     // MARK: - Image's frame/side handlers
@@ -350,13 +397,8 @@ extension ImgEditingViewModel: IImgEditingViewModel {
         self.colorFilterUseCase.updateSourceImageForPreviewing(source: result)
         
         self.resetUIToDefault()
-        
-        let brightness = self.colorFilterUseCase.getCurrentBrightLevel()
-        let constrast = self.colorFilterUseCase.getCurrentConstrastLevel()
-        self.stepHolder.addStep(new: .init(type: .crop,
-                                           result: result,
-                                           brightness: brightness,
-                                           constrast: constrast))
+    
+        self.addSizeEdittingToEditingStep(image: result)
         self.updateStateForUndoRedo()
     }
     
@@ -383,48 +425,48 @@ extension ImgEditingViewModel: IImgEditingViewModel {
             self.colorFilterUseCase.changeBrightLevel(to: val, applying: true)
         case .constrast:
             self.colorFilterUseCase.changeConstrastLevel(to: val, applying: true)
-        case .exposure: break
-            // TODO: exposure
-        case .temperature: break
-            // TODO: temperature
-        case .saturation: break
-            // TODO: saturation
-        }
-    }
-}
-
-extension DWrapper.Entity.ImgToolType {
-    func getIcon() -> UIImage? {
-        switch self {
-        case .brightness: 
-            return R.image.icon_brightness.callAsFunction()
-        case .crop:
-            return R.image.icon_cut.callAsFunction()
-        case .constrast:
-            return R.image.icon_constrast.callAsFunction()
         case .exposure:
-            return R.image.icon_exposure.callAsFunction()
-        case .temperature:
-            return R.image.icon_temperature.callAsFunction()
+            self.colorFilterUseCase.changeExposureLevel(to: val, applying: true)
         case .saturation:
-            return R.image.icon_saturation.callAsFunction()
+            self.colorFilterUseCase.changeSaturationLevel(to: val, applying: true)
+        case .temperature:
+            self.colorFilterUseCase.changeTemperatureLevel(to: val, applying: true)
         }
+        
+        // Update on UI
+        self.showCurrentToolWithValue()
     }
     
-    func getToolName() -> String {
-        switch self {
-        case .brightness:
-            return "Brightness"
+    private func needUpdateColorFilterUIAfterUndoRedo(step: EditingStep) -> Bool {
+        let item = self.getImgToolAt(index: self.currentToolIndex)
+        return step.type == item.type
+    }
+    
+    private func updateColorFilterSlider(step: EditingStep) {
+        let range = self.colorFilterUseCase.getColorFilterRangeBy(type: step.type)
+        self.singleToolValuePub.send(range.current)
+    }
+  
+    private func showCurrentToolWithValue() {
+        let item = self.getImgToolAt(index: self.currentToolIndex)
+        let range = self.colorFilterUseCase.getColorFilterRangeBy(type: item.type)
+        
+        // Color for label of current value
+        let trend: ColorFilterValueTrend
+        = range.current.isEqual(to: range.center)
+        ? .base : (range.current > range.center ? .increase : .decrease)
+        self.colorFilterValueTrendPub.send(trend)
+        
+        // Text for label of current value
+        let diffValue = range.current - range.center
+        let percentValue = round(diffValue / range.distance * 100)
+
+        let formatedValue = String.init(format: "%0.0f", percentValue)
+        switch item.type {
         case .crop:
-            return "Crop"
-        case .constrast:
-            return "Constrast"
-        case .exposure:
-            return "Exposure"
-        case .temperature:
-            return "Temperature"
-        case .saturation:
-            return "Saturation"
+            self.currentToolNamePub.send("")
+        default:
+            self.currentToolNamePub.send("\(item.type.getToolName()): \(formatedValue)%")
         }
     }
 }

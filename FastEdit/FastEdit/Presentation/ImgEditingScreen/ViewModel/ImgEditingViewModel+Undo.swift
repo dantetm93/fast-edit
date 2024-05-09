@@ -8,11 +8,14 @@
 import Foundation
 
 struct EditingStep {
-    let type: DWrapper.Entity.ImgToolType
-    let result: UIImage
+    var type: DWrapper.Entity.ImgToolType
+    var result: UIImage
     var isFirst: Bool = false
-    let brightness: Double
-    let constrast: Double
+    var brightness: Double
+    var constrast: Double
+    var exposure: Double
+    var saturation: Double
+    var temperature: Double
 }
 
 protocol IEditingStepHolder {
@@ -49,9 +52,27 @@ class EditingStepHolder: IEditingStepHolder {
         if self.currentStepIndex < 0 {
             return nil
         }
-        self.currentStepIndex -= 1 // Go back
-        let newCurrentStep = self.listStep[self.currentStepIndex]
-        return newCurrentStep
+        
+        // Undo this current action
+        let currentStep = self.listStep[self.currentStepIndex]
+        self.currentStepIndex -= 1 // But apply last change of this action
+        var previousStep = self.listStep[self.currentStepIndex]
+        previousStep.type = currentStep.type
+        
+        let lastValue = self.getValueByToolType(type: currentStep.type, step: previousStep)
+        AppLogger.d("EditingStepHolder", "[UNDO] \(currentStep.type.getToolName()), set value to \(lastValue)", "", #line)
+        return previousStep
+    }
+    
+    private func getValueByToolType(type: DWrapper.Entity.ImgToolType, step: EditingStep) -> Double {
+        switch type {
+        case .crop: return 0
+        case .brightness: return step.brightness
+        case .constrast: return step.constrast
+        case .saturation: return step.saturation
+        case .exposure: return step.brightness
+        case .temperature: return step.temperature
+        }
     }
     
     func canRedo() -> Bool {
@@ -63,8 +84,10 @@ class EditingStepHolder: IEditingStepHolder {
         if self.currentStepIndex >= lastIndex {
             return nil
         }
-        self.currentStepIndex += 1 // Go next
+        self.currentStepIndex += 1 // Apply next action
         let newCurrentStep = self.listStep[self.currentStepIndex]
+        let nextValue = self.getValueByToolType(type: newCurrentStep.type, step: newCurrentStep)
+        AppLogger.d("EditingStepHolder", "[REDO] \(newCurrentStep.type.getToolName()), set value to \(nextValue)", "", #line)
         return newCurrentStep
     }
 }
