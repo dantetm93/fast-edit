@@ -208,7 +208,7 @@ extension DWrapper.UseCase.ColorFilter: IColorFilterUseCase {
         
         let rangeOfVector: Double = 3000
         let deltaX = (temperatureLevel - center) / (range / 2) * rangeOfVector
-        let deltaY = (temperatureLevel - center) / (range / 2) * rangeOfVector
+//        let deltaY = (temperatureLevel - center) / (range / 2) * rangeOfVector
         let adjustedVector: ColorTemperatureInfo = .init(inputNeutral: .init(x: deltaX + 6500, y: 0),
                                                          inputTargetNeutral: CIVector(x: 6500, y: 0))
         return adjustedVector
