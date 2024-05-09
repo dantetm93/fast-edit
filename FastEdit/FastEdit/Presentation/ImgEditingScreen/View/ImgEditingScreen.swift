@@ -163,6 +163,7 @@ class ImgEditingScreen: BaseScreen {
             .receive(on: DispatchQueue.main)
             .sink {[weak self] statusText in
                 guard let self else { return }
+                self.labelUndoRedoStatus.isHidden = statusText.isEmpty
                 self.labelUndoRedoStatus.text = statusText
             }
             .store(in: &self.cancellable)
@@ -171,7 +172,7 @@ class ImgEditingScreen: BaseScreen {
             .debounce(for: 3, scheduler: DispatchQueue.main)
             .sink {[weak self] statusText in
                 guard let self else { return }
-                self.labelUndoRedoStatus.text = ""
+                self.labelUndoRedoStatus.isHidden = true
             }
             .store(in: &self.cancellable)
         
@@ -312,13 +313,13 @@ class ImgEditingScreen: BaseScreen {
         self.buttonRotateLeft
             .onClick {[unowned self] _ in
                 guard let cropView else { return }
-                cropView.rotateImageNinetyDegrees(animated: true, clockwise: true)
+                cropView.rotateImageNinetyDegrees(animated: true, clockwise: false)
             }
         
-        self.buttonRotateLeft
+        self.buttonRotateRight
             .onClick {[unowned self] _ in
                 guard let cropView else { return }
-                cropView.rotateImageNinetyDegrees(animated: true, clockwise: false)
+                cropView.rotateImageNinetyDegrees(animated: true, clockwise: true)
             }
         
         self.buttonResetCropping.interactable = false
