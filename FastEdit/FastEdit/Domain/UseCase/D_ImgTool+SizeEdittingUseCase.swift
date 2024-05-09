@@ -39,6 +39,10 @@ extension DWrapper.UseCase {
             
             return cropRect
         }
+        
+        deinit {
+            print("SizeEditingUseCase deinit" )
+        }
     }
 }
 

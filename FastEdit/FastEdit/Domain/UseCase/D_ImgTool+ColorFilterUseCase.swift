@@ -62,6 +62,10 @@ extension DWrapper.UseCase {
             self.exposureAdjustFilter = exposureAdjustFilter
             
         }
+        
+        deinit {
+            print("ColorFilterUseCase deinit" )
+        }
     }
 }
 

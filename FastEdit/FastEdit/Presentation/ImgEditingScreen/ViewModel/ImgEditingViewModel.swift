@@ -167,6 +167,10 @@ class ImgEditingViewModel {
                                            temperature: temperature))
     }
     
+    deinit {
+        print("ImgEditingViewModel deinit" )
+    }
+    
 }
 
 extension ImgEditingViewModel: IImgEditingViewModel {

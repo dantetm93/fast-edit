@@ -262,7 +262,7 @@ class ImgEditingScreen: BaseScreen {
     // MARK: - UI Action -
     private func setupUIAction() {
         self.buttonBack
-            .onClick { _ in
+            .onClick {[unowned self] _ in
                 if self.getViewModel().needConfirmBeforeQuit() {
                     let mess = "There are some unsaved changes. Do you want to keep editing or exit without saving?"
                     self.showDestructiveConfirm(mess,
@@ -276,7 +276,7 @@ class ImgEditingScreen: BaseScreen {
             }
         
         self.buttonSave
-            .onClick { _ in
+            .onClick {[unowned self] _ in
                 CustomLoading.show()
                 self.getViewModel().saveProcessedImgToGallery { success, error in
                     CustomLoading.hide()
@@ -289,12 +289,12 @@ class ImgEditingScreen: BaseScreen {
         
         // -- Undo & Redo --
         self.buttonUndo
-            .onClick { _ in
+            .onClick {[unowned self] _ in
                 self.getViewModel().undo()
             }
         
         self.buttonRedo
-            .onClick { _ in
+            .onClick {[unowned self] _ in
                 self.getViewModel().redo()
             }
         
@@ -335,5 +335,9 @@ class ImgEditingScreen: BaseScreen {
     @objc private func onSliderChanged() {
         let currentColorFilterValue = Double(self.sliderToolValue.value)
         self.getViewModel().changeColorFilter(val: currentColorFilterValue)
+    }
+    
+    deinit {
+        print("\(self.objectName) deinit" )
     }
 }
