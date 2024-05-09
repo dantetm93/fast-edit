@@ -21,7 +21,7 @@ This project is created following the Presentation-Domain-Transfer structure and
 And these below iOS library:
   - SnapKit (5.7.1)
   - R.swift (7.3.2)
-  - TOCropViewController (2.73)
+  - TOCropViewController (2.7.3)
 	
 ## How to run
 It requires `XCode 12.0 or later` to run directly from the source code. XCode 12 requires `MacOS 10.15.4+`.
