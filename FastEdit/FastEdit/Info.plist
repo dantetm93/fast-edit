@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>PHPhotoLibraryPreventAutomaticLimitedAccessAlert</key>
+	<true/>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -19,11 +21,5 @@
 			</array>
 		</dict>
 	</dict>
-	<key>PHPhotoLibraryPreventAutomaticLimitedAccessAlert</key>
-	<true/>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Fast Edit needs permissions to access the photo gallery for pick and save images.</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Fast Edit needs permissions to access the photo gallery for pick and save images.</string>
 </dict>
 </plist>
