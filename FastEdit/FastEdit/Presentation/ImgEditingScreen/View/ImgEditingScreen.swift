@@ -32,7 +32,8 @@ class ImgEditingScreen: BaseScreen {
     @IBOutlet weak var buttonResetCropping: UIButton!
     @IBOutlet weak var buttonRotateRight: UIButton!
     @IBOutlet weak var buttonConfirmCropping: UIButton!
-
+    @IBOutlet weak var buttonSetRatio: UIButton!
+    
     /**
      - (TOCropView *)cropView
      {
@@ -322,6 +323,12 @@ class ImgEditingScreen: BaseScreen {
                 cropView.rotateImageNinetyDegrees(animated: true, clockwise: true)
             }
         
+        self.buttonSetRatio
+            .onClick {[unowned self] _ in
+                guard let cropView else { return }
+                self.showActionSheetForCroppingRatio()
+            }
+        
         self.buttonResetCropping.interactable = false
         self.buttonResetCropping
             .onClick {[unowned self] _ in
@@ -335,6 +342,55 @@ class ImgEditingScreen: BaseScreen {
     @objc private func onSliderChanged() {
         let currentColorFilterValue = Double(self.sliderToolValue.value)
         self.getViewModel().changeColorFilter(val: currentColorFilterValue)
+    }
+    
+    private func showActionSheetForCroppingRatio() {
+        let alertController = UIAlertController(title: "Select the cropping ratio", message: "", preferredStyle: .actionSheet)
+        
+        let ratio1 = UIAlertAction(title: "Freeform", style: .default, handler: {[weak self] alert in
+            guard let self = self else { return }
+            self.setAspectRatioPreset(aspectRatioPreset: .presetOriginal, animated: true)
+        })
+        
+        let ratio2 = UIAlertAction(title: "3:2", style: .default, handler: {[weak self] alert in
+            guard let self = self else { return }
+            self.setAspectRatioPreset(aspectRatioPreset: .preset3x2, animated: true)
+        })
+        
+        let ratio3 = UIAlertAction(title: "4:3", style: .default, handler: {[weak self] alert in
+            guard let self = self else { return }
+            self.setAspectRatioPreset(aspectRatioPreset: .preset4x3, animated: true)
+        })
+        
+        let ratio4 = UIAlertAction(title: "7:5", style: .default, handler: {[weak self] alert in
+            guard let self = self else { return }
+            self.setAspectRatioPreset(aspectRatioPreset: .preset7x5, animated: true)
+        })
+        
+        let ratio5 = UIAlertAction(title: "16:9", style: .default, handler: {[weak self] alert in
+            guard let self = self else { return }
+            self.setAspectRatioPreset(aspectRatioPreset: .preset16x9, animated: true)
+        })
+        
+        alertController.addAction(ratio1)
+        alertController.addAction(ratio2)
+        alertController.addAction(ratio3)
+        alertController.addAction(ratio4)
+        alertController.addAction(ratio5)
+        
+        let cancelAction = UIAlertAction(title: "Close", style: .cancel, handler: {
+            (action : UIAlertAction!) -> Void in })
+        
+        alertController.addAction(cancelAction)
+        
+        if let popoverController = alertController.popoverPresentationController {
+            popoverController.sourceView = self.view //to set the source of your alert
+            // you can set this as per your requirement.
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+            popoverController.permittedArrowDirections = [] //to hide the arrow of any particular direction
+        }
+        
+        self.present(alertController, animated: true)
     }
     
     deinit {
