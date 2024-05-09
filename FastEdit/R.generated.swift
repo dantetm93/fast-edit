@@ -41,7 +41,7 @@ struct _R {
     let developmentRegion = "en"
   }
 
-  /// This `_R.image` struct is generated, and contains static references to 21 images.
+  /// This `_R.image` struct is generated, and contains static references to 22 images.
   struct image {
     let bundle: Foundation.Bundle
 
@@ -59,6 +59,9 @@ struct _R {
 
     /// Image `ic_voice_recording`.
     var ic_voice_recording: RswiftResources.ImageResource { .init(name: "ic_voice_recording", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `icon_aspect_ratio`.
+    var icon_aspect_ratio: RswiftResources.ImageResource { .init(name: "icon_aspect_ratio", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
 
     /// Image `icon_back`.
     var icon_back: RswiftResources.ImageResource { .init(name: "icon_back", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
@@ -178,6 +181,7 @@ struct _R {
 
     func validate() throws {
       if UIKit.UIImage(named: "img_home", in: bundle, compatibleWith: nil) == nil { throw RswiftResources.ValidationError("[R.swift] Image named 'img_home' is used in nib 'HomeScreen', but couldn't be loaded.") }
+      if UIKit.UIImage(named: "icon_aspect_ratio", in: bundle, compatibleWith: nil) == nil { throw RswiftResources.ValidationError("[R.swift] Image named 'icon_aspect_ratio' is used in nib 'ImgEditingScreen', but couldn't be loaded.") }
       if UIKit.UIImage(named: "icon_back", in: bundle, compatibleWith: nil) == nil { throw RswiftResources.ValidationError("[R.swift] Image named 'icon_back' is used in nib 'ImgEditingScreen', but couldn't be loaded.") }
       if UIKit.UIImage(named: "icon_eraser", in: bundle, compatibleWith: nil) == nil { throw RswiftResources.ValidationError("[R.swift] Image named 'icon_eraser' is used in nib 'ImgEditingScreen', but couldn't be loaded.") }
       if UIKit.UIImage(named: "icon_redo", in: bundle, compatibleWith: nil) == nil { throw RswiftResources.ValidationError("[R.swift] Image named 'icon_redo' is used in nib 'ImgEditingScreen', but couldn't be loaded.") }
