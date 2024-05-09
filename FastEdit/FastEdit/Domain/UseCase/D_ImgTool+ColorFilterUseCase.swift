@@ -38,9 +38,9 @@ extension DWrapper.UseCase {
         private let baseLevel: Double
         private var currentBrightLevel: Double = 0
         private var currentConstrastLevel: Double = 1
-        private var currentSaturationLevel: Double = 0
+        private var currentSaturationLevel: Double = 1
         private var currentExposureLevel: Double = 1
-        private var currentTemperatureLevel: Double = 1
+        private var currentTemperatureLevel: Double = 0
 
         private var lastFilteredImg = CIImage()
         private var colorFilter: CIFilter!
@@ -75,7 +75,7 @@ extension DWrapper.UseCase.ColorFilter: IColorFilterUseCase {
         case .constrast: return .init(max: 2, min: 0, current: self.currentConstrastLevel, center: 1)
         case .saturation: return .init(max: 2, min: 0, current: self.currentSaturationLevel, center: 1)
         case .exposure: return .init(max: 2, min: 0, current: self.currentExposureLevel, center: 1)
-        case .temperature: return .init(max: 2, min: 0, current: self.currentTemperatureLevel, center: 1)
+        case .temperature: return .init(max: 1, min: -1, current: self.currentTemperatureLevel, center: 0)
         }
     }
     
@@ -180,16 +180,42 @@ extension DWrapper.UseCase.ColorFilter: IColorFilterUseCase {
     }
     
     // MARK: - Handlers of Temperature Filter
-    private func getTemperatureInfoFrom(temperatureLevel: Double) -> ColorTemperatureInfo {
-        // Warm
-        return .init(inputNeutral: .init(x: 16000, y: 1000), inputTargetNeutral: CIVector(x: 1000, y: 500))
+    /** Ref: https://en.wikipedia.org/wiki/Color_temperature */
+    private func getTemperatureInfoFrom(temperatureLevel: Double, range: Double, center: Double) -> ColorTemperatureInfo {
+        if center.isEqual(to: temperatureLevel) {
+            return .init(inputNeutral: .init(x: 6500, y: 0),
+                         inputTargetNeutral: CIVector(x: 6500, y: 0))
+        }
+        
+//        let fullColdFiltered: ColorTemperatureInfo = .init(inputNeutral: .init(x: 16000, y: 1000),
+//                     inputTargetNeutral: CIVector(x: 1000, y: 500))
+//        let fullWarmFiltered: ColorTemperatureInfo = .init(inputNeutral: .init(x: 6500, y: 500),
+//                     inputTargetNeutral: CIVector(x: 1000, y: 500))
+//        let rangeOfYNeutral = abs(fullColdFiltered.inputNeutral.y - fullWarmFiltered.inputNeutral.y)
+//        let rangeOfXNeutral = abs(fullColdFiltered.inputNeutral.x - fullWarmFiltered.inputNeutral.x)
+
+//
+//        let rangeOfVector: Double = abs(fullColdFiltered.inputNeutral.x - fullWarmFiltered.inputNeutral.x)
+//        let delta = ((range - temperatureLevel) / range) * rangeOfVector
+//        print("delta of Temp Diff \(delta)")
+//        let adjustedVector: ColorTemperatureInfo = .init(inputNeutral: .init(x: delta + 6500, y: 1000),
+//                                                         inputTargetNeutral: CIVector(x: 1000, y: 500))
+//        return adjustedVector
+        
+        let rangeOfVector: Double = 3000
+        let deltaX = (temperatureLevel - center) / (range / 2) * rangeOfVector
+        let deltaY = (temperatureLevel - center) / (range / 2) * rangeOfVector
+        let adjustedVector: ColorTemperatureInfo = .init(inputNeutral: .init(x: deltaX + 6500, y: 0),
+                                                         inputTargetNeutral: CIVector(x: 6500, y: 0))
+        return adjustedVector
     }
     
     func changeTemperatureLevel(to: Double, applying: Bool) {
         AppLogger.d("ColorFilter", "changeTemperatureLevel \(to)", "", #line)
         self.currentTemperatureLevel = to
         if applying {
-            let tempInfo = self.getTemperatureInfoFrom(temperatureLevel: to)
+            let range = self.getColorFilterRangeBy(type: .temperature)
+            let tempInfo = self.getTemperatureInfoFrom(temperatureLevel: to, range: range.max - range.min, center: range.center)
             self.temperatureFilter.setValue(tempInfo.inputNeutral, forKey: "inputNeutral")
             self.temperatureFilter.setValue(tempInfo.inputTargetNeutral, forKey: "inputTargetNeutral")
             

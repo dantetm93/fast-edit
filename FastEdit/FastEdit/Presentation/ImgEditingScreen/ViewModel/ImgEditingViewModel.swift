@@ -114,7 +114,7 @@ class ImgEditingViewModel {
         }
         
         self.colorFilterDebouncing
-            .debounce(for: 0.3, scheduler: self.defaultSerialQueue)
+            .debounce(for: 0.2, scheduler: self.defaultSerialQueue)
             .sink {[weak self] tool in
                 guard let self else { return }
                 
@@ -316,7 +316,7 @@ extension ImgEditingViewModel: IImgEditingViewModel {
     }
     
     func needConfirmBeforeQuit() -> Bool {
-        return true
+        return self.stepHolder.canUndo() || self.stepHolder.canRedo()
     }
     
     // MARK: - Undo & Redo
@@ -418,19 +418,20 @@ extension ImgEditingViewModel: IImgEditingViewModel {
     
     // MARK: - Color Filter handlers
     func changeColorFilter(val: Double) {
+        let rounded = round(val * 100) / 100
         let item = self.getImgToolAt(index: self.currentToolIndex)
         switch item.type {
         case .crop: break
         case .brightness:
-            self.colorFilterUseCase.changeBrightLevel(to: val, applying: true)
+            self.colorFilterUseCase.changeBrightLevel(to: rounded, applying: true)
         case .constrast:
-            self.colorFilterUseCase.changeConstrastLevel(to: val, applying: true)
+            self.colorFilterUseCase.changeConstrastLevel(to: rounded, applying: true)
         case .exposure:
-            self.colorFilterUseCase.changeExposureLevel(to: val, applying: true)
+            self.colorFilterUseCase.changeExposureLevel(to: rounded, applying: true)
         case .saturation:
-            self.colorFilterUseCase.changeSaturationLevel(to: val, applying: true)
+            self.colorFilterUseCase.changeSaturationLevel(to: rounded, applying: true)
         case .temperature:
-            self.colorFilterUseCase.changeTemperatureLevel(to: val, applying: true)
+            self.colorFilterUseCase.changeTemperatureLevel(to: rounded, applying: true)
         }
         
         // Update on UI
