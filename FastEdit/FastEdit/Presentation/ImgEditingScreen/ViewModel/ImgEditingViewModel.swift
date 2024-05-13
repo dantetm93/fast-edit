@@ -414,7 +414,7 @@ extension ImgEditingViewModel: IImgEditingViewModel {
     // MARK: - Color Filter handlers
     func changeColorFilter(val: Double) {
         let rounded = round(val * 100) / 100
-        if !rounded.isEqual(to: val) { return }
+//        if !rounded.isEqual(to: val) { return }
         let item = self.getImgToolAt(index: self.currentToolIndex)
         switch item.type {
         case .crop: break
