@@ -42,7 +42,7 @@ extension DWrapper.UseCase {
         private var currentExposureLevel: Double = 1
         private var currentTemperatureLevel: Double = 0
 
-        private var lastFilteredImg = CIImage()
+        private var resultCIImage = CIImage()
         private var colorFilter: CIFilter!
         private let contextCI = CIContext.init(options: nil)
         private var lastResult = UIImage()
@@ -52,7 +52,7 @@ extension DWrapper.UseCase {
         
         private var temperatureFilter: CIFilter!
         private var exposureAdjustFilter: CIFilter!
-        
+                
         public init(baseLevel: Double) {
             self.baseLevel = baseLevel
             self.colorFilter = CIFilter(name: "CIColorControls")
@@ -85,7 +85,7 @@ extension DWrapper.UseCase.ColorFilter: IColorFilterUseCase {
     
     func getValidUIImageForSavingInAlbum() -> UIImage? {
         AppLogger.d("ColorFilter", "getValidUIImageForSavingInAlbum", "", #line)
-        let filteredImage = self.lastFilteredImg
+        let filteredImage = self.resultCIImage
         guard let cgimg = self.contextCI.createCGImage(filteredImage, from: filteredImage.extent) else {
             AppLogger.error("ColorFilter", "getValidUIImageForSavingInAlbum: [Couldnt generate CGImage from CIImage]", "", #line)
             return nil
@@ -125,7 +125,7 @@ extension DWrapper.UseCase.ColorFilter: IColorFilterUseCase {
         guard let aCGImage = anUIImage.cgImage else { return }
         let aCIImage = CIImage(cgImage: aCGImage)
         self.colorFilter.setValue(aCIImage, forKey: kCIInputImageKey)
-        self.lastFilteredImg = aCIImage
+        self.resultCIImage = aCIImage
         self.combineAllFilter()
     }
     
@@ -232,11 +232,11 @@ extension DWrapper.UseCase.ColorFilter: IColorFilterUseCase {
         // Apply 1st filtering
         guard let colorFilteredImg = self.colorFilter.outputImage else {
             AppLogger.error("ColorFilter", "[colorFilter] FAILED, show [lastFilteredImg]", "", #line)
-            let uiImage = UIImage.init(ciImage: self.lastFilteredImg)
+            let uiImage = UIImage.init(ciImage: self.resultCIImage)
             return self.onPreviewing(uiImage)
         }
         AppLogger.d("ColorFilter", "[colorFilter] DONE, move to [temperatureFilter]", "", #line)
-        self.lastFilteredImg = colorFilteredImg
+        self.resultCIImage = colorFilteredImg
         
         // Apply 2nd filtering
         self.temperatureFilter.setValue(colorFilteredImg, forKey: kCIInputImageKey)
@@ -246,7 +246,7 @@ extension DWrapper.UseCase.ColorFilter: IColorFilterUseCase {
             return self.onPreviewing(uiImage)
         }
         AppLogger.d("ColorFilter", "[temperatureFilter] DONE, move to [exposureAdjustFilter]", "", #line)
-        self.lastFilteredImg = temperatureFilteredImg
+        self.resultCIImage = temperatureFilteredImg
         
         // Apply 3rd filtering
         self.exposureAdjustFilter.setValue(temperatureFilteredImg, forKey: kCIInputImageKey)
@@ -255,7 +255,7 @@ extension DWrapper.UseCase.ColorFilter: IColorFilterUseCase {
             let uiImage = UIImage.init(ciImage: temperatureFilteredImg)
             return self.onPreviewing(uiImage)
         }
-        self.lastFilteredImg = exposureAdjustedImg
+        self.resultCIImage = exposureAdjustedImg
         
         // All filtering applied
         let combinedImg = UIImage.init(ciImage: exposureAdjustedImg)

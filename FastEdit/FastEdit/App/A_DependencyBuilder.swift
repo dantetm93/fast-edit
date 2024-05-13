@@ -17,8 +17,33 @@ extension AppDependencyBuilder {
         return new
     }
     
-    func getColorFilterUseCase(baseLevel: Double) -> IColorFilterUseCase {
-        let new = DWrapper.UseCase.ColorFilter.init(baseLevel: baseLevel)
+    func getCombiningColorFilterUseCase() -> IColorFilterCombiningUseCase {
+        let new = DWrapper.UseCase.CombiningFilter.init()
+        return new
+    }
+    
+    func getBrightnessFilterUseCase() -> IColorSimpleFilterUseCase {
+        let new = DWrapper.UseCase.BrightnessFilter.init()
+        return new
+    }
+    
+    func getConstrastFilterUseCase() -> IColorSimpleFilterUseCase {
+        let new = DWrapper.UseCase.ConstrastFilter.init()
+        return new
+    }
+    
+    func getSaturationFilterUseCase() -> IColorSimpleFilterUseCase {
+        let new = DWrapper.UseCase.SaturationFilter.init()
+        return new
+    }
+    
+    func getExposureFilterUseCase() -> IColorSimpleFilterUseCase {
+        let new = DWrapper.UseCase.ExposureFilter.init()
+        return new
+    }
+    
+    func getTemperatureFilterUseCase() -> IColorSimpleFilterUseCase {
+        let new = DWrapper.UseCase.TemperatureFilter.init()
         return new
     }
     

@@ -325,7 +325,7 @@ class ImgEditingScreen: BaseScreen {
         
         self.buttonSetRatio
             .onClick {[unowned self] _ in
-                guard let cropView else { return }
+                guard self.cropView != nil else { return }
                 self.showActionSheetForCroppingRatio()
             }
         

@@ -21,7 +21,7 @@ protocol IImgEditingAction {
     func undo()
     func redo()
     
-    func setColorFilterUseCase(val: IColorFilterUseCase)
+    func setColorCombiningUseCase(val: IColorFilterCombiningUseCase)
     func changeColorFilter(val: Double)
 }
 
@@ -78,8 +78,19 @@ class ImgEditingViewModel {
     private let colorFilterRangePub = ColorFilterRangePub.init()
     private let colorFilterValueTrendPub = ColorFilterValueTrendPub.init()
     private let undoRedoStatus = StringValuePub.init("")
+    
+    private lazy var numberFormatter: NumberFormatter = {
+        let numberFormatter = NumberFormatter.init()
+        numberFormatter.minimumFractionDigits = 0
+        numberFormatter.maximumFractionDigits = 0
+        numberFormatter.positivePrefix = "+"
+        numberFormatter.negativePrefix = "-"
+        return numberFormatter
+    }()
 
-    init(originalImg: UIImage) { self.originalImg = originalImg }
+    init(originalImg: UIImage) { 
+        self.originalImg = originalImg
+    }
 
     private var sizeEditingUseCase: ISizeEditing!
     func setCropUseCase(val: ISizeEditing) {
@@ -96,10 +107,10 @@ class ImgEditingViewModel {
     private var cancellable = Set<AnyCancellable>()
     private let defaultSerialQueue = DispatchQueue.init(label: "ImgEditingViewModel")
     private var colorFilterDebouncing = PassthroughSubject<DWrapper.Entity.ImgToolInfo, Never>()
-    private var colorFilterUseCase: IColorFilterUseCase!
-    func setColorFilterUseCase(val: IColorFilterUseCase) {
+    private var colorFilterUseCase: IColorFilterCombiningUseCase!
+    func setColorCombiningUseCase(val: IColorFilterCombiningUseCase) {
         self.colorFilterUseCase = val
-        self.colorFilterUseCase.setOnPreviewing 
+        self.colorFilterUseCase.setOnChangeFilterValue
         {[unowned self] filteredImage in
             if self.isStartSavingImgToAlbum {
                 return
@@ -133,38 +144,20 @@ class ImgEditingViewModel {
         let croppingType = DWrapper.Entity.ImgToolType.crop
         AppLogger.d("ImgEditingViewModel", "User just applied: \(croppingType.getToolName()) with value: \(String.init(describing: image.size))", "", #line)
         
-        let brightness = self.colorFilterUseCase.getCurrentBrightLevel()
-        let constrast = self.colorFilterUseCase.getCurrentConstrastLevel()
-        let exposure = self.colorFilterUseCase.getCurrentExposureLevel()
-        let saturation = self.colorFilterUseCase.getCurrentSaturationLevel()
-        let temperature = self.colorFilterUseCase.getCurrentTemperatureLevel()
-        
+        let filterParam = self.colorFilterUseCase.getCurrentFilterParam()
         self.stepHolder.addStep(new: .init(type: croppingType,
                                            result: image,
-                                           brightness: brightness,
-                                           constrast: constrast,
-                                           exposure: exposure,
-                                           saturation: saturation,
-                                           temperature: temperature))
+                                           filterParam: filterParam))
     }
     
     private func addColorFilterToEditingStep(type: DWrapper.Entity.ImgToolType) {
         let range = self.colorFilterUseCase.getColorFilterRangeBy(type: type)
         AppLogger.d("ImgEditingViewModel", "User just applied: \(type.getToolName()) with value: \(range.current)", "", #line)
         
-        let brightness = self.colorFilterUseCase.getCurrentBrightLevel()
-        let constrast = self.colorFilterUseCase.getCurrentConstrastLevel()
-        let exposure = self.colorFilterUseCase.getCurrentExposureLevel()
-        let saturation = self.colorFilterUseCase.getCurrentSaturationLevel()
-        let temperature = self.colorFilterUseCase.getCurrentTemperatureLevel()
-        
+        let filterParam = self.colorFilterUseCase.getCurrentFilterParam()
         self.stepHolder.addStep(new: .init(type: type,
                                            result: UIImage.init(),
-                                           brightness: brightness,
-                                           constrast: constrast,
-                                           exposure: exposure,
-                                           saturation: saturation,
-                                           temperature: temperature))
+                                           filterParam: filterParam))
     }
     
     deinit {
@@ -187,7 +180,7 @@ extension ImgEditingViewModel: IImgEditingViewModel {
         self.addSizeEdittingToEditingStep(image: self.originalImg)
         self.updateStateForUndoRedo()
         
-        self.colorFilterUseCase.updateSourceImageForPreviewing(source: self.originalImg)
+        self.colorFilterUseCase.updateSourceImage(source: self.originalImg, applying: false)
     }
     
     func getOriginalImg() -> UIImage {
@@ -291,12 +284,18 @@ extension ImgEditingViewModel: IImgEditingViewModel {
     // MARK: - IImgEditingAction
     func saveProcessedImgToGallery(done: @escaping (Bool, String) -> Void) {
         self.isStartSavingImgToAlbum = true
-        if let validUIImage = self.colorFilterUseCase.getValidUIImageForSavingInAlbum() {
-            // Crop first then apply filter, so the final img will be processed by ColorFilter
-            self.proccesedImg = validUIImage
+        if self.needConfirmBeforeQuit() {
+            // User already made some changes
+            if let validUIImage = self.colorFilterUseCase.exportValidImgForGallery() {
+                // Crop first then apply filter, so the final img will be processed by ColorFilter
+                self.proccesedImg = validUIImage
+            } else {
+                // If we can not get a Valid Image from Color Filter, just take last resize Img
+                self.proccesedImg = self.getLastResizedImg()
+            }
         } else {
-            // If we can not get a Valid Image from Color Filter, just take last resize Img
-            self.proccesedImg = self.getLastResizedImg()
+            // User doesnt make any change or undo until there is no change
+            self.proccesedImg = self.getOriginalImg()
         }
         
         AlbumManager.current.save(image: self.getLastProcessedImg()) 
@@ -377,18 +376,10 @@ extension ImgEditingViewModel: IImgEditingViewModel {
             self.lastResizedImg = newStep.result
             // Re-apply filtering
             let newSourceForFiltering = self.getLastResizedImg()
-            self.colorFilterUseCase.updateSourceImageForPreviewing(source: newSourceForFiltering)
-
-        case .brightness:
-            self.colorFilterUseCase.changeBrightLevel(to: newStep.brightness, applying: true)
-        case .constrast:
-            self.colorFilterUseCase.changeConstrastLevel(to: newStep.constrast, applying: true)
-        case .exposure:
-            self.colorFilterUseCase.changeExposureLevel(to: newStep.constrast, applying: true)
-        case .saturation:
-            self.colorFilterUseCase.changeSaturationLevel(to: newStep.constrast, applying: true)
-        case .temperature:
-            self.colorFilterUseCase.changeTemperatureLevel(to: newStep.constrast, applying: true)
+            self.colorFilterUseCase.updateSourceImage(source: newSourceForFiltering, applying: true)
+        default:
+            let value = newStep.filterParam.getValueBy(type: newStep.type)
+            self.colorFilterUseCase.changeFilterValueByType(value: value, type: newStep.type)
         }
     }
     
@@ -398,7 +389,7 @@ extension ImgEditingViewModel: IImgEditingViewModel {
         let result = self.sizeEditingUseCase.cropTo(source: lastResizedImg, angle: angle, rect: rect)
         self.lastResizedImg = result // For original img that is used as source img of ColorFiltering
         self.proccesedImg = result // For displaying the final cut and filtered img
-        self.colorFilterUseCase.updateSourceImageForPreviewing(source: result)
+        self.colorFilterUseCase.updateSourceImage(source: result, applying: true)
         
         self.resetUIToDefault()
     
@@ -423,19 +414,11 @@ extension ImgEditingViewModel: IImgEditingViewModel {
     // MARK: - Color Filter handlers
     func changeColorFilter(val: Double) {
         let rounded = round(val * 100) / 100
+        if !rounded.isEqual(to: val) { return }
         let item = self.getImgToolAt(index: self.currentToolIndex)
         switch item.type {
         case .crop: break
-        case .brightness:
-            self.colorFilterUseCase.changeBrightLevel(to: rounded, applying: true)
-        case .constrast:
-            self.colorFilterUseCase.changeConstrastLevel(to: rounded, applying: true)
-        case .exposure:
-            self.colorFilterUseCase.changeExposureLevel(to: rounded, applying: true)
-        case .saturation:
-            self.colorFilterUseCase.changeSaturationLevel(to: rounded, applying: true)
-        case .temperature:
-            self.colorFilterUseCase.changeTemperatureLevel(to: rounded, applying: true)
+        default: self.colorFilterUseCase.changeFilterValueByType(value: rounded, type: item.type)
         }
         
         // Update on UI
@@ -465,13 +448,19 @@ extension ImgEditingViewModel: IImgEditingViewModel {
         // Text for label of current value
         let diffValue = range.current - range.center
         let percentValue = round(diffValue / range.distance * 100)
-
-        let formatedValue = String.init(format: "%0.0f", percentValue)
+        if percentValue.isEqual(to: 0) {
+            self.currentToolNamePub.send("\(item.type.getToolName()): --")
+            return
+        }
+        
+        let simpleFormattedValue = String.init(format: "%0.0f", percentValue)
+        let formattedValue = self.numberFormatter.string(from: NSNumber.init(floatLiteral: percentValue)) ?? simpleFormattedValue
+        
         switch item.type {
         case .crop:
             self.currentToolNamePub.send("")
         default:
-            self.currentToolNamePub.send("\(item.type.getToolName()): \(formatedValue)%")
+            self.currentToolNamePub.send("\(item.type.getToolName()): \(formattedValue)%")
         }
     }
 }

@@ -11,11 +11,14 @@ struct EditingStep {
     var type: DWrapper.Entity.ImgToolType
     var result: UIImage
     var isFirst: Bool = false
-    var brightness: Double
-    var constrast: Double
-    var exposure: Double
-    var saturation: Double
-    var temperature: Double
+    var filterParam: DWrapper.Entity.ColorFilterParam
+    
+    init(type: DWrapper.Entity.ImgToolType, result: UIImage, isFirst: Bool = false, filterParam: DWrapper.Entity.ColorFilterParam) {
+        self.type = type
+        self.result = result
+        self.isFirst = isFirst
+        self.filterParam = filterParam
+    }
 }
 
 protocol IEditingStepHolder {
@@ -67,11 +70,7 @@ class EditingStepHolder: IEditingStepHolder {
     private func getValueByToolType(type: DWrapper.Entity.ImgToolType, step: EditingStep) -> Double {
         switch type {
         case .crop: return 0
-        case .brightness: return step.brightness
-        case .constrast: return step.constrast
-        case .saturation: return step.saturation
-        case .exposure: return step.brightness
-        case .temperature: return step.temperature
+        default: return step.filterParam.getValueBy(type: type)
         }
     }
     

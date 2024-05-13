@@ -16,16 +16,7 @@ extension NavigationCenter {
     }
     
     static func openImgEditingScreen(original: UIImage) {
-        let cropUseCase = AppDependencyBuilder.current.getCropUseCase()
-        let viewModel = AppDependencyBuilder.current.getImgEditingViewModel(original: original)
-        viewModel.setCropUseCase(val: cropUseCase)
-        let edittingHolder = AppDependencyBuilder.current.getEditingStepHolder()
-        viewModel.setStepHolder(val: edittingHolder)
-        let colorFilterUseCase = AppDependencyBuilder.current.getColorFilterUseCase(baseLevel: 0)
-        viewModel.setColorFilterUseCase(val: colorFilterUseCase)
-
-        let screen = ImgEditingScreen()
-        screen.setViewModel(val: viewModel)
+        let screen = ImgEditingScreenBuilder.build(original: original)
         screen.view.frame = getCurrentWindow().bounds // Trigger viewDidLoad with correct visible RECT
         push(screen: screen)
     }

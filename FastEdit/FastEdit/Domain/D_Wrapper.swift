@@ -7,7 +7,7 @@
 
 import Foundation
 
-class DWrapper {
+public class DWrapper {
     
 }
 
